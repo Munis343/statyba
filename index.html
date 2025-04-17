@@ -1,395 +1,136 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Renovation Estimator Pro</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #EFF2F5;
-      color: #343A40;
-    }
-    .card {
-      background-color: #F8F9FA;
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      padding: 1.5rem;
-      transition: all 0.2s ease;
-    }
-    .card:hover {
-      background-color: #e9ecef;
-    }
-    .icon {
-      width: 28px;
-      height: 28px;
-      stroke-width: 2.5;
-      color: #4E6E81;
-    }
-  </style>
+    <title>Drywall Calculator Test</title>
 </head>
-<body class="flex min-h-screen bg-[#EFF2F5] text-gray-800">
+<body>
+    <h1>Check the Console for Results</h1>
+    <p>Open your browser's developer console (F12 or right-click -> Inspect -> Console) to see the output of the example calculations.</p>
 
-  <!-- Sidebar -->
-  <aside class="w-64 bg-[#4E6E81] text-white flex flex-col p-6 space-y-4">
-    <h1 class="text-2xl font-bold mb-4">🏗️ BuilderPro</h1>
-    <nav class="flex flex-col gap-3">
-      <button onclick="goTo('dashboard')" class="text-left hover:text-gray-200">🏠 Dashboard</button>
-      <button onclick="goTo('newProject')" class="text-left hover:text-gray-200">➕ New Project</button>
-      <button onclick="goTo('projects')" class="text-left hover:text-gray-200">📁 My Projects</button>
-      <button onclick="goTo('summary')" class="text-left hover:text-gray-200">📊 Summary</button>
-    </nav>
-    <div class="mt-auto text-sm text-gray-300 pt-4 border-t border-gray-500">
-      Renovation Estimator v2.0
-    </div>
-  </aside>
+    <script>
+        // --- Paste the ENTIRE JavaScript code you received here ---
 
-  <!-- Main App -->
-  <div class="flex-1 p-6 space-y-8 overflow-y-auto" id="app">
-<!-- Dashboard -->
-<section id="dashboardPage">
-  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">Dashboard</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-    <div class="card">
-      <div class="text-sm text-gray-500">Active Projects</div>
-      <div class="text-2xl font-bold" id="activeProjectsCount">0</div>
-    </div>
-    <div class="card">
-      <div class="text-sm text-gray-500">Scheduled</div>
-      <div class="text-2xl font-bold">6 Jobs</div>
-    </div>
-    <div class="card">
-      <div class="text-sm text-gray-500">Recent Activity</div>
-      <ul class="list-disc list-inside text-sm mt-2">
-        <li>2 projects updated</li>
-        <li>Paint module used</li>
-      </ul>
-    </div>
-  </div>
+        /**
+         * Calculates the estimated number of standard drywall sheets needed for a room.
+         * Uses metric units (meters, square meters).
+         *
+         * @param {number} roomLengthMeters - The length of the room in meters.
+         * @param {number} roomWidthMeters - The width of the room in meters.
+         * @param {number} wallHeightMeters - The height of the walls in meters.
+         * @param {number} sheetWidthMeters - The width of a single drywall sheet in meters.
+         * @param {number} sheetLengthMeters - The length of a single drywall sheet in meters.
+         * @param {number} wastePercentage - The estimated waste as a percentage (e.g., 10 for 10%).
+         * @returns {number} The estimated total number of drywall sheets needed, rounded up to the nearest whole number.
+         */
+        function calculateDrywallSheetsMetric(
+            roomLengthMeters,
+            roomWidthMeters,
+            wallHeightMeters,
+            sheetWidthMeters,
+            sheetLengthMeters,
+            wastePercentage
+        ) {
+            // --- Input Validation (Basic) ---
+            if (
+                roomLengthMeters <= 0 ||
+                roomWidthMeters <= 0 ||
+                wallHeightMeters <= 0 ||
+                sheetWidthMeters <= 0 ||
+                sheetLengthMeters <= 0 ||
+                wastePercentage < 0
+            ) {
+                console.error("All dimensions and waste percentage must be positive numbers (waste can be zero).");
+                return NaN; // Return Not-a-Number for invalid input
+            }
 
-  <h3 class="text-lg font-semibold text-[#4E6E81] mb-2">Trades</h3>
-  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-    <button onclick="goTo('painting')" class="card text-center">
-      <div class="text-xl">🎨</div>
-      <div class="font-medium">Painting</div>
-    </button>
-    <button onclick="goTo('plumbing')" class="card text-center">
-      <div class="text-xl">🔧</div>
-      <div class="font-medium">Plumbing</div>
-    </button>
-    <button onclick="goTo('electrical')" class="card text-center">
-      <div class="text-xl">⚡</div>
-      <div class="font-medium">Electrical</div>
-    </button>
-  </div>
-</section>
+            // --- Calculations ---
 
-<!-- New Project -->
-<section id="newProjectPage" class="hidden">
-  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">New Project</h2>
-  <div class="grid md:grid-cols-2 gap-4">
-    <input id="projName" class="border p-2 rounded w-full" placeholder="Project Name" />
-    <input id="projClient" class="border p-2 rounded w-full" placeholder="Client Name" />
-    <input id="projAddress" class="border p-2 rounded md:col-span-2" placeholder="Address" />
-    <input id="projStart" type="date" class="border p-2 rounded w-full" />
-    <input id="projEnd" type="date" class="border p-2 rounded w-full" />
-    <input id="projBudget" type="number" class="border p-2 rounded w-full" placeholder="Estimated Budget" />
-  </div>
-  <div class="mt-4">
-    <label class="block font-semibold mb-1">Select Trades:</label>
-    <label class="block"><input type="checkbox" value="painting" class="mr-2" /> Painting</label>
-    <label class="block"><input type="checkbox" value="plumbing" class="mr-2" /> Plumbing</label>
-    <label class="block"><input type="checkbox" value="electrical" class="mr-2" /> Electrical</label>
-  </div>
-  <textarea id="projNotes" class="w-full border p-2 rounded mt-4" rows="3" placeholder="Project Notes..."></textarea>
-  <button onclick="saveNewProject()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save Project</button>
-</section>
+            // 1. Calculate Wall Area
+            const roomPerimeterMeters = 2 * (roomLengthMeters + roomWidthMeters);
+            const totalWallAreaSqMeters = roomPerimeterMeters * wallHeightMeters;
 
-<!-- Projects List -->
-<section id="projectsPage" class="hidden">
-  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">My Projects</h2>
-  <div id="projectsList" class="space-y-4"></div>
-</section>
+            // 2. Calculate Ceiling Area
+            const totalCeilingAreaSqMeters = roomLengthMeters * roomWidthMeters;
 
-<!-- Project Detail Page -->
-<section id="projectPage" class="hidden">
-  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">Project Details</h2>
-  <div id="projectDetails" class="space-y-2 text-sm"></div>
-  <h3 class="font-semibold mt-4">Modules</h3>
-  <div id="tradeLinks" class="flex flex-wrap gap-2 mt-2"></div>
-</section>
+            // 3. Calculate Total Area to Cover
+            const totalAreaToCoverSqMeters = totalWallAreaSqMeters + totalCeilingAreaSqMeters;
 
-<!-- Trade Modules -->
-<section id="paintingPage" class="hidden">
-  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">Painting</h2>
-  <div class="grid grid-cols-2 gap-4">
-    <input id="wallWidth" type="number" step="any" class="border p-2 rounded" placeholder="Wall Width (m)" />
-    <input id="wallHeight" type="number" step="any" class="border p-2 rounded" placeholder="Wall Height (m)" />
-  </div>
-  <button onclick="addWall()" class="mt-2 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">➕ Add Wall</button>
-  <div class="mt-4">
-    <label class="block font-semibold">Coats:</label>
-    <input id="paintCoats" type="number" class="border p-2 rounded w-full" value="2" />
-  </div>
-  <div class="mt-2">
-    <label class="block font-semibold">Paint Coverage (m²/L):</label>
-    <input id="paintCoverage" type="number" step="any" class="border p-2 rounded w-full" value="10" />
-  </div>
-  <ul id="wallsList" class="list-disc list-inside text-sm text-gray-600 mt-4"></ul>
-  <div class="mt-4 text-lg">
-    🧴 Total Paint: <strong id="paintTotal">0</strong> L
-  </div>
-  <button onclick="savePaintingData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save</button>
-</section>
+            // 4. Calculate Area of One Drywall Sheet
+            const singleSheetAreaSqMeters = sheetWidthMeters * sheetLengthMeters;
 
-<section id="plumbingPage" class="hidden">
-  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">Plumbing</h2>
-  <input id="fixtureCount" type="number" class="border p-2 rounded w-full mb-4" placeholder="Number of Fixtures" />
-  <input id="pipeLength" type="number" step="any" class="border p-2 rounded w-full mb-4" placeholder="Total Pipe Length (m)" />
-  <input id="installTime" type="number" class="border p-2 rounded w-full mb-4" placeholder="Installation Time (hrs)" />
-  <div class="mt-2 text-lg">🛠️ Estimated Hours: <strong id="plumbingEstimate">0</strong> hrs</div>
-  <button onclick="savePlumbingData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save</button>
-</section>
+             // Avoid division by zero if sheet size is invalid
+            if (singleSheetAreaSqMeters <= 0) {
+                 console.error("Drywall sheet dimensions result in zero or negative area.");
+                 return NaN;
+            }
 
-<section id="electricalPage" class="hidden">
-  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">Electrical</h2>
-  <input id="outletCount" type="number" class="border p-2 rounded w-full mb-4" placeholder="Number of Outlets" />
-  <input id="wireLength" type="number" step="any" class="border p-2 rounded w-full mb-4" placeholder="Total Wire Length (m)" />
-  <input id="breakerCount" type="number" class="border p-2 rounded w-full mb-4" placeholder="Breaker Count" />
-  <div class="mt-2 text-lg">⚡ Load Estimate: <strong id="electricalEstimate">0</strong> A</div>
-  <button onclick="saveElectricalData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save</button>
-</section>
 
-<!-- Summary -->
-<section id="summaryPage" class="hidden">
-  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">📊 Summary</h2>
-  <div id="summaryOutput" class="text-sm text-gray-700">No data yet.</div>
-</section>
+            // 5. Calculate Raw Number of Sheets Needed (without waste)
+            const rawSheetsNeeded = totalAreaToCoverSqMeters / singleSheetAreaSqMeters;
 
-<!-- Modal -->
-<div id="projectPickerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
-  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
-    <h3 class="text-lg font-semibold text-[#4E6E81] mb-4">Select a Project</h3>
-    <div id="projectPickerList" class="space-y-2"></div>
-    <button onclick="closeProjectPicker()" class="mt-4 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">Cancel</button>
-  </div>
-</div>
-<script>
-let walls = [], currentProjectId = null;
-let projects = JSON.parse(localStorage.getItem('projects') || '[]');
+            // 6. Account for Waste
+            const wasteFactor = 1 + (wastePercentage / 100);
+            const sheetsWithWaste = rawSheetsNeeded * wasteFactor;
 
-function goTo(page) {
-  document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
-  document.getElementById(page + "Page").classList.remove("hidden");
-  if (page === 'dashboard') document.getElementById('activeProjectsCount').innerText = projects.length;
-  if (page === 'projects') renderProjectsList();
-  if (page === 'summary') renderSummary();
-  if (page === 'painting') renderWalls();
-}
+            // 7. Round Up to the Nearest Whole Sheet
+            const finalSheetsNeeded = Math.ceil(sheetsWithWaste);
 
-function saveNewProject() {
-  const name = document.getElementById('projName').value.trim();
-  if (!name) return alert("Enter project name.");
-  const trades = Array.from(document.querySelectorAll('#newProjectPage input[type=checkbox]:checked')).map(c => c.value);
-  const newProj = {
-    id: Date.now(),
-    name,
-    client: document.getElementById('projClient').value,
-    address: document.getElementById('projAddress').value,
-    start: document.getElementById('projStart').value,
-    end: document.getElementById('projEnd').value,
-    budget: document.getElementById('projBudget').value,
-    notes: document.getElementById('projNotes').value,
-    trades: {},
-    selectedTrades: trades
-  };
-  projects.push(newProj);
-  localStorage.setItem('projects', JSON.stringify(projects));
-  currentProjectId = newProj.id;
-  goTo('projects');
-}
+            return finalSheetsNeeded;
+        }
 
-function renderProjectsList() {
-  const list = document.getElementById('projectsList');
-  list.innerHTML = '';
-  projects.forEach(p => {
-    const div = document.createElement('div');
-    div.className = "bg-white p-4 rounded shadow flex justify-between items-center";
-    div.innerHTML = `
-      <div>
-        <div class="font-bold text-[#4E6E81]">${p.name}</div>
-        <div class="text-sm text-gray-500">${p.client} | ${p.address}</div>
-      </div>
-      <div class="flex gap-2">
-        <button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="viewProject(${p.id})">View</button>
-        <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="deleteProject(${p.id})">Delete</button>
-      </div>`;
-    list.appendChild(div);
-  });
-}
+        // --- Example Usage (Metric) ---
 
-function viewProject(id) {
-  currentProjectId = id;
-  const p = projects.find(p => p.id === id);
-  const details = document.getElementById('projectDetails');
-  details.innerHTML = `
-    <div><strong>Client:</strong> ${p.client}</div>
-    <div><strong>Address:</strong> ${p.address}</div>
-    <div><strong>Budget:</strong> $${p.budget}</div>
-    <div><strong>Start:</strong> ${p.start}</div>
-    <div><strong>End:</strong> ${p.end}</div>
-    <div><strong>Notes:</strong> ${p.notes}</div>`;
-  const links = document.getElementById('tradeLinks');
-  links.innerHTML = '';
-  p.selectedTrades.forEach(trade => {
-    const btn = document.createElement('button');
-    btn.textContent = trade;
-    btn.className = "px-3 py-1 bg-[#5F7C8D] text-white rounded";
-    btn.onclick = () => goTo(trade);
-    links.appendChild(btn);
-  });
-  goTo('project');
-}
+        // Example: A room 5 meters long, 4 meters wide, with walls 2.5 meters high.
+        // Using standard metric drywall sheets: 1.2 meters wide x 2.4 meters long.
+        // Assume 10% waste.
+        const exampleRoomLength = 5;      // meters
+        const exampleRoomWidth = 4;       // meters
+        const exampleWallHeight = 2.5;    // meters
+        const exampleSheetWidth = 1.2;    // meters (common metric size)
+        const exampleSheetLength = 2.4;   // meters (common metric size)
+        const exampleWastePercent = 10;   // percentage
 
-function deleteProject(id) {
-  if (!confirm("Delete this project?")) return;
-  projects = projects.filter(p => p.id !== id);
-  localStorage.setItem('projects', JSON.stringify(projects));
-  renderProjectsList();
-}
+        const estimatedDrywallSheets = calculateDrywallSheetsMetric(
+            exampleRoomLength,
+            exampleRoomWidth,
+            exampleWallHeight,
+            exampleSheetWidth,
+            exampleSheetLength,
+            exampleWastePercent
+        );
 
-// PAINTING
-function addWall() {
-  const w = parseFloat(document.getElementById('wallWidth').value);
-  const h = parseFloat(document.getElementById('wallHeight').value);
-  if (!w || !h) return alert("Enter valid wall size.");
-  walls.push({ width: w, height: h });
-  renderWalls();
-  calculatePaint();
-}
-function renderWalls() {
-  const list = document.getElementById('wallsList');
-  list.innerHTML = '';
-  walls.forEach((w, i) => {
-    const li = document.createElement('li');
-    li.textContent = `Wall ${i + 1}: ${w.width}m × ${w.height}m`;
-    list.appendChild(li);
-  });
-}
-function calculatePaint() {
-  const area = walls.reduce((sum, w) => sum + w.width * w.height, 0);
-  const coats = parseInt(document.getElementById('paintCoats').value) || 1;
-  const coverage = parseFloat(document.getElementById('paintCoverage').value) || 10;
-  const total = (area * coats) / coverage;
-  document.getElementById('paintTotal').textContent = total.toFixed(2);
-}
-function savePaintingData() {
-  if (!currentProjectId) return openProjectPicker('painting');
-  const p = projects.find(p => p.id === currentProjectId);
-  p.trades.painting = {
-    walls,
-    coats: document.getElementById('paintCoats').value,
-    coverage: document.getElementById('paintCoverage').value
-  };
-  localStorage.setItem('projects', JSON.stringify(projects));
-  alert("Painting data saved!");
-}
+        if (!isNaN(estimatedDrywallSheets)) {
+            console.log(`For a room ${exampleRoomLength}m x ${exampleRoomWidth}m x ${exampleWallHeight}m`);
+            console.log(`Using ${exampleSheetWidth}m x ${exampleSheetLength}m sheets with ${exampleWastePercent}% waste:`);
+            console.log(`Estimated number of drywall sheets needed: ${estimatedDrywallSheets}`);
+        }
 
-// PLUMBING
-function savePlumbingData() {
-  if (!currentProjectId) return openProjectPicker('plumbing');
-  const p = projects.find(p => p.id === currentProjectId);
-  p.trades.plumbing = {
-    fixtureCount: document.getElementById('fixtureCount').value,
-    pipeLength: document.getElementById('pipeLength').value,
-    installTime: document.getElementById('installTime').value
-  };
-  localStorage.setItem('projects', JSON.stringify(projects));
-  document.getElementById('plumbingEstimate').textContent = p.trades.plumbing.installTime;
-  alert("Plumbing data saved.");
-}
+        // --- Another Example with different sheet size ---
+        const exampleRoomLength2 = 6;
+        const exampleRoomWidth2 = 5;
+        const exampleWallHeight2 = 2.8;
+        const exampleSheetWidth2 = 1.2;
+        const exampleSheetLength2 = 3.0; // Longer sheet size
+        const exampleWastePercent2 = 12;
 
-// ELECTRICAL
-function saveElectricalData() {
-  if (!currentProjectId) return openProjectPicker('electrical');
-  const p = projects.find(p => p.id === currentProjectId);
-  p.trades.electrical = {
-    outletCount: document.getElementById('outletCount').value,
-    wireLength: document.getElementById('wireLength').value,
-    breakerCount: document.getElementById('breakerCount').value
-  };
-  localStorage.setItem('projects', JSON.stringify(projects));
-  document.getElementById('electricalEstimate').textContent = (p.trades.electrical.outletCount * 1.5).toFixed(1);
-  alert("Electrical data saved.");
-}
+        const estimatedDrywallSheets2 = calculateDrywallSheetsMetric(
+            exampleRoomLength2,
+            exampleRoomWidth2,
+            exampleWallHeight2,
+            exampleSheetWidth2,
+            exampleSheetLength2,
+            exampleWastePercent2
+        );
 
-// SUMMARY
-function renderSummary() {
-  const container = document.getElementById('summaryOutput');
-  if (!currentProjectId) return container.innerHTML = "No project selected.";
-  const p = projects.find(p => p.id === currentProjectId);
-  let html = `<div><strong>Project:</strong> ${p.name}</div>`;
-  if (p.trades.painting) {
-    const area = p.trades.painting.walls.reduce((sum, w) => sum + w.width * w.height, 0);
-    const coats = p.trades.painting.coats || 1;
-    const coverage = p.trades.painting.coverage || 10;
-    const total = (area * coats) / coverage;
-    html += `
-      <hr class="my-2" />
-      <strong>🎨 Painting</strong><br>
-      Area: ${area.toFixed(2)} m²<br>
-      Coats: ${coats}<br>
-      Paint Needed: ${total.toFixed(2)} L`;
-  }
-  if (p.trades.plumbing) {
-    html += `
-      <hr class="my-2" />
-      <strong>🔧 Plumbing</strong><br>
-      Fixtures: ${p.trades.plumbing.fixtureCount}<br>
-      Pipes: ${p.trades.plumbing.pipeLength} m<br>
-      Time: ${p.trades.plumbing.installTime} hrs`;
-  }
-  if (p.trades.electrical) {
-    html += `
-      <hr class="my-2" />
-      <strong>⚡ Electrical</strong><br>
-      Outlets: ${p.trades.electrical.outletCount}<br>
-      Wire: ${p.trades.electrical.wireLength} m<br>
-      Breakers: ${p.trades.electrical.breakerCount}`;
-  }
-  container.innerHTML = html;
-}
+        if (!isNaN(estimatedDrywallSheets2)) {
+            console.log(`\nFor a room ${exampleRoomLength2}m x ${exampleRoomWidth2}m x ${exampleWallHeight2}m`);
+            console.log(`Using ${exampleSheetWidth2}m x ${exampleSheetLength2}m sheets with ${exampleWastePercent2}% waste:`);
+            console.log(`Estimated number of drywall sheets needed: ${estimatedDrywallSheets2}`);
+        }
 
-// MODAL
-let modalReturnTo = null;
-function openProjectPicker(trade) {
-  modalReturnTo = trade;
-  const modal = document.getElementById('projectPickerModal');
-  modal.classList.remove('hidden');
-  const list = document.getElementById('projectPickerList');
-  list.innerHTML = '';
-  projects.forEach(p => {
-    const btn = document.createElement('button');
-    btn.textContent = p.name;
-    btn.className = "w-full text-left bg-[#EFF2F5] hover:bg-[#dee2e6] px-3 py-2 rounded";
-    btn.onclick = () => {
-      currentProjectId = p.id;
-      modal.classList.add('hidden');
-      if (modalReturnTo === 'painting') savePaintingData();
-      if (modalReturnTo === 'plumbing') savePlumbingData();
-      if (modalReturnTo === 'electrical') saveElectricalData();
-    };
-    list.appendChild(btn);
-  });
-}
-function closeProjectPicker() {
-  document.getElementById('projectPickerModal').classList.add('hidden');
-  modalReturnTo = null;
-}
 
-// INIT
-goTo('dashboard');
-</script>
+        // --- End of Pasted JavaScript Code ---
+    </script>
+
 </body>
 </html>
