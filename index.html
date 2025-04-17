@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Renovation Estimator</title>
+  <title>Renovation Estimator Pro</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     body {
@@ -14,122 +14,160 @@
     .card {
       background-color: #F8F9FA;
       border-radius: 0.75rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
       padding: 1.5rem;
       transition: all 0.2s ease;
     }
     .card:hover {
-      transform: scale(1.02);
       background-color: #e9ecef;
     }
-    .icon-circle {
-      width: 48px;
-      height: 48px;
-      background-color: #5F7C8D;
-      border-radius: 9999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .icon-circle svg {
-      width: 24px;
-      height: 24px;
-      color: white;
+    .icon {
+      width: 28px;
+      height: 28px;
+      stroke-width: 2.5;
+      color: #4E6E81;
     }
   </style>
 </head>
-<body>
-  <!-- Sticky Header -->
-  <header class="sticky top-0 bg-[#4E6E81] text-white shadow z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center flex-wrap gap-y-2">
-      <h1 class="text-xl font-semibold">🏗️ Renovation Estimator</h1>
-      <nav class="space-x-2 flex flex-wrap gap-y-2">
-        <button onclick="goHome()" class="bg-white text-[#4E6E81] px-3 py-1 rounded hover:bg-gray-100 font-medium">Home</button>
-        <button onclick="goTo('newProject')" class="bg-white text-[#4E6E81] px-3 py-1 rounded hover:bg-gray-100 font-medium">New Project</button>
-        <button onclick="goTo('myProjects')" class="bg-white text-[#4E6E81] px-3 py-1 rounded hover:bg-gray-100 font-medium">My Projects</button>
-      </nav>
+<body class="flex min-h-screen bg-[#EFF2F5] text-gray-800">
+
+  <!-- Sidebar -->
+  <aside class="w-64 bg-[#4E6E81] text-white flex flex-col p-6 space-y-4">
+    <h1 class="text-2xl font-bold mb-4">🏗️ BuilderPro</h1>
+    <nav class="flex flex-col gap-3">
+      <button onclick="goTo('dashboard')" class="text-left hover:text-gray-200">🏠 Dashboard</button>
+      <button onclick="goTo('newProject')" class="text-left hover:text-gray-200">➕ New Project</button>
+      <button onclick="goTo('projects')" class="text-left hover:text-gray-200">📁 My Projects</button>
+      <button onclick="goTo('summary')" class="text-left hover:text-gray-200">📊 Summary</button>
+    </nav>
+    <div class="mt-auto text-sm text-gray-300 pt-4 border-t border-gray-500">
+      Renovation Estimator v2.0
     </div>
-  </header>
-<main id="app" class="max-w-6xl mx-auto p-6 space-y-10">
+  </aside>
 
-  <!-- Home Page (Grid Menu) -->
-  <section id="homePage" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-    <button onclick="goTo('newProject')" class="card flex flex-col items-center text-center">
-      <div class="icon-circle mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-        </svg>
-      </div>
-      <span class="font-medium">New Project</span>
-    </button>
-
-    <button onclick="goTo('myProjects')" class="card flex flex-col items-center text-center">
-      <div class="icon-circle mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10h18V7H3z"/>
-        </svg>
-      </div>
-      <span class="font-medium">My Projects</span>
-    </button>
-
-    <button onclick="goTo('summary')" class="card flex flex-col items-center text-center">
-      <div class="icon-circle mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18M3 9h18M9 3v6"/>
-        </svg>
-      </div>
-      <span class="font-medium">Summary</span>
-    </button>
-
-    <button onclick="goTo('paintingPage')" class="card flex flex-col items-center text-center">
-      <div class="icon-circle mb-2 bg-green-600">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7M5 10l7-7 7 7"/>
-        </svg>
-      </div>
-      <span class="font-medium">Painting</span>
-    </button>
-
-    <button onclick="goTo('plumbingPage')" class="card flex flex-col items-center text-center">
-      <div class="icon-circle mb-2 bg-blue-600">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 10-8 0v2m8 0a4 4 0 018 0v2"/>
-        </svg>
-      </div>
-      <span class="font-medium">Plumbing</span>
-    </button>
-  </section>
-
-  <!-- New Project -->
-  <section id="newProjectPage" class="hidden card">
-    <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">New Project</h2>
-    <div class="grid md:grid-cols-2 gap-4">
-      <input id="projName" class="border p-2 rounded w-full" placeholder="Project Name" />
-      <input id="projClient" class="border p-2 rounded w-full" placeholder="Client Name" />
-      <input id="projAddress" class="border p-2 rounded md:col-span-2" placeholder="Address" />
-      <input id="projStart" type="date" class="border p-2 rounded w-full" />
-      <input id="projEnd" type="date" class="border p-2 rounded w-full" />
-      <input id="projBudget" type="number" class="border p-2 rounded w-full" placeholder="Estimated Budget" />
+  <!-- Main App -->
+  <div class="flex-1 p-6 space-y-8 overflow-y-auto" id="app">
+<!-- Dashboard -->
+<section id="dashboardPage">
+  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">Dashboard</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div class="card">
+      <div class="text-sm text-gray-500">Active Projects</div>
+      <div class="text-2xl font-bold" id="activeProjectsCount">0</div>
     </div>
-    <div class="mt-4">
-      <label class="font-semibold block mb-2">Select Trades:</label>
-      <label class="block"><input type="checkbox" value="painting" class="mr-2" /> 🎨 Painting</label>
-      <label class="block"><input type="checkbox" value="plumbing" class="mr-2" /> 🔧 Plumbing</label>
+    <div class="card">
+      <div class="text-sm text-gray-500">Scheduled</div>
+      <div class="text-2xl font-bold">6 Jobs</div>
     </div>
-    <textarea id="projNotes" class="w-full border p-2 rounded mt-4" rows="3" placeholder="Project Notes..."></textarea>
-    <button onclick="saveNewProject()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save Project</button>
-  </section>
+    <div class="card">
+      <div class="text-sm text-gray-500">Recent Activity</div>
+      <ul class="list-disc list-inside text-sm mt-2">
+        <li>2 projects updated</li>
+        <li>Paint module used</li>
+      </ul>
+    </div>
+  </div>
 
-  <!-- My Projects -->
-  <section id="myProjectsPage" class="hidden card">
-    <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">My Projects</h2>
-    <div id="projectsList" class="space-y-4"></div>
-  </section>
+  <h3 class="text-lg font-semibold text-[#4E6E81] mb-2">Trades</h3>
+  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+    <button onclick="goTo('painting')" class="card text-center">
+      <div class="text-xl">🎨</div>
+      <div class="font-medium">Painting</div>
+    </button>
+    <button onclick="goTo('plumbing')" class="card text-center">
+      <div class="text-xl">🔧</div>
+      <div class="font-medium">Plumbing</div>
+    </button>
+    <button onclick="goTo('electrical')" class="card text-center">
+      <div class="text-xl">⚡</div>
+      <div class="font-medium">Electrical</div>
+    </button>
+  </div>
+</section>
 
-  <!-- Painting, Plumbing, Summary (included in Part 3 with logic) -->
-</main>
+<!-- New Project -->
+<section id="newProjectPage" class="hidden">
+  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">New Project</h2>
+  <div class="grid md:grid-cols-2 gap-4">
+    <input id="projName" class="border p-2 rounded w-full" placeholder="Project Name" />
+    <input id="projClient" class="border p-2 rounded w-full" placeholder="Client Name" />
+    <input id="projAddress" class="border p-2 rounded md:col-span-2" placeholder="Address" />
+    <input id="projStart" type="date" class="border p-2 rounded w-full" />
+    <input id="projEnd" type="date" class="border p-2 rounded w-full" />
+    <input id="projBudget" type="number" class="border p-2 rounded w-full" placeholder="Estimated Budget" />
+  </div>
+  <div class="mt-4">
+    <label class="block font-semibold mb-1">Select Trades:</label>
+    <label class="block"><input type="checkbox" value="painting" class="mr-2" /> Painting</label>
+    <label class="block"><input type="checkbox" value="plumbing" class="mr-2" /> Plumbing</label>
+    <label class="block"><input type="checkbox" value="electrical" class="mr-2" /> Electrical</label>
+  </div>
+  <textarea id="projNotes" class="w-full border p-2 rounded mt-4" rows="3" placeholder="Project Notes..."></textarea>
+  <button onclick="saveNewProject()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save Project</button>
+</section>
 
-<!-- Project Picker Modal -->
+<!-- Projects List -->
+<section id="projectsPage" class="hidden">
+  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">My Projects</h2>
+  <div id="projectsList" class="space-y-4"></div>
+</section>
+
+<!-- Project Detail Page -->
+<section id="projectPage" class="hidden">
+  <h2 class="text-2xl font-bold text-[#4E6E81] mb-4">Project Details</h2>
+  <div id="projectDetails" class="space-y-2 text-sm"></div>
+  <h3 class="font-semibold mt-4">Modules</h3>
+  <div id="tradeLinks" class="flex flex-wrap gap-2 mt-2"></div>
+</section>
+
+<!-- Trade Modules -->
+<section id="paintingPage" class="hidden">
+  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">Painting</h2>
+  <div class="grid grid-cols-2 gap-4">
+    <input id="wallWidth" type="number" step="any" class="border p-2 rounded" placeholder="Wall Width (m)" />
+    <input id="wallHeight" type="number" step="any" class="border p-2 rounded" placeholder="Wall Height (m)" />
+  </div>
+  <button onclick="addWall()" class="mt-2 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">➕ Add Wall</button>
+  <div class="mt-4">
+    <label class="block font-semibold">Coats:</label>
+    <input id="paintCoats" type="number" class="border p-2 rounded w-full" value="2" />
+  </div>
+  <div class="mt-2">
+    <label class="block font-semibold">Paint Coverage (m²/L):</label>
+    <input id="paintCoverage" type="number" step="any" class="border p-2 rounded w-full" value="10" />
+  </div>
+  <ul id="wallsList" class="list-disc list-inside text-sm text-gray-600 mt-4"></ul>
+  <div class="mt-4 text-lg">
+    🧴 Total Paint: <strong id="paintTotal">0</strong> L
+  </div>
+  <button onclick="savePaintingData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save</button>
+</section>
+
+<section id="plumbingPage" class="hidden">
+  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">Plumbing</h2>
+  <input id="fixtureCount" type="number" class="border p-2 rounded w-full mb-4" placeholder="Number of Fixtures" />
+  <input id="pipeLength" type="number" step="any" class="border p-2 rounded w-full mb-4" placeholder="Total Pipe Length (m)" />
+  <input id="installTime" type="number" class="border p-2 rounded w-full mb-4" placeholder="Installation Time (hrs)" />
+  <div class="mt-2 text-lg">🛠️ Estimated Hours: <strong id="plumbingEstimate">0</strong> hrs</div>
+  <button onclick="savePlumbingData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save</button>
+</section>
+
+<section id="electricalPage" class="hidden">
+  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">Electrical</h2>
+  <input id="outletCount" type="number" class="border p-2 rounded w-full mb-4" placeholder="Number of Outlets" />
+  <input id="wireLength" type="number" step="any" class="border p-2 rounded w-full mb-4" placeholder="Total Wire Length (m)" />
+  <input id="breakerCount" type="number" class="border p-2 rounded w-full mb-4" placeholder="Breaker Count" />
+  <div class="mt-2 text-lg">⚡ Load Estimate: <strong id="electricalEstimate">0</strong> A</div>
+  <button onclick="saveElectricalData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save</button>
+</section>
+
+<!-- Summary -->
+<section id="summaryPage" class="hidden">
+  <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">📊 Summary</h2>
+  <div id="summaryOutput" class="text-sm text-gray-700">No data yet.</div>
+</section>
+
+<!-- Modal -->
 <div id="projectPickerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
   <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
     <h3 class="text-lg font-semibold text-[#4E6E81] mb-4">Select a Project</h3>
@@ -138,35 +176,22 @@
   </div>
 </div>
 <script>
-let walls = [];
-let currentPage = 'home';
-let currentProjectId = null;
+let walls = [], currentProjectId = null;
 let projects = JSON.parse(localStorage.getItem('projects') || '[]');
 
-// NAVIGATION
 function goTo(page) {
-  currentPage = page;
-  showPage();
-}
-function goHome() {
-  currentPage = 'home';
-  currentProjectId = null;
-  showPage();
-}
-function showPage() {
-  const pages = ['homePage', 'newProjectPage', 'myProjectsPage', 'paintingPage', 'plumbingPage', 'summaryPage'];
-  pages.forEach(id => document.getElementById(id)?.classList.add('hidden'));
-  document.getElementById(`${currentPage}Page`)?.classList.remove('hidden');
-
-  if (currentPage === 'myProjects') renderProjectsList();
-  if (currentPage === 'summary') renderSummary();
-  if (currentPage === 'paintingPage') renderWalls();
+  document.querySelectorAll("section").forEach(sec => sec.classList.add("hidden"));
+  document.getElementById(page + "Page").classList.remove("hidden");
+  if (page === 'dashboard') document.getElementById('activeProjectsCount').innerText = projects.length;
+  if (page === 'projects') renderProjectsList();
+  if (page === 'summary') renderSummary();
+  if (page === 'painting') renderWalls();
 }
 
-// PROJECT LOGIC
 function saveNewProject() {
   const name = document.getElementById('projName').value.trim();
   if (!name) return alert("Enter project name.");
+  const trades = Array.from(document.querySelectorAll('#newProjectPage input[type=checkbox]:checked')).map(c => c.value);
   const newProj = {
     id: Date.now(),
     name,
@@ -177,40 +202,56 @@ function saveNewProject() {
     budget: document.getElementById('projBudget').value,
     notes: document.getElementById('projNotes').value,
     trades: {},
-    selectedTrades: Array.from(document.querySelectorAll('#newProjectPage input[type=checkbox]:checked')).map(c => c.value)
+    selectedTrades: trades
   };
   projects.push(newProj);
   localStorage.setItem('projects', JSON.stringify(projects));
   currentProjectId = newProj.id;
-  alert("Project saved!");
-  goTo('myProjects');
+  goTo('projects');
 }
 
 function renderProjectsList() {
-  const container = document.getElementById('projectsList');
-  container.innerHTML = '';
+  const list = document.getElementById('projectsList');
+  list.innerHTML = '';
   projects.forEach(p => {
     const div = document.createElement('div');
-    div.className = "p-4 border rounded shadow bg-white flex justify-between items-center";
+    div.className = "bg-white p-4 rounded shadow flex justify-between items-center";
     div.innerHTML = `
       <div>
         <div class="font-bold text-[#4E6E81]">${p.name}</div>
         <div class="text-sm text-gray-500">${p.client} | ${p.address}</div>
       </div>
       <div class="flex gap-2">
-        ${p.selectedTrades.includes('painting') ? `<button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'paintingPage')">🎨</button>` : ''}
-        ${p.selectedTrades.includes('plumbing') ? `<button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'plumbingPage')">🔧</button>` : ''}
-        <button class="bg-blue-600 text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'summaryPage')">Summary</button>
+        <button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="viewProject(${p.id})">View</button>
         <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="deleteProject(${p.id})">Delete</button>
       </div>`;
-    container.appendChild(div);
+    list.appendChild(div);
   });
 }
 
-function openTrade(id, tradePage) {
+function viewProject(id) {
   currentProjectId = id;
-  goTo(tradePage);
+  const p = projects.find(p => p.id === id);
+  const details = document.getElementById('projectDetails');
+  details.innerHTML = `
+    <div><strong>Client:</strong> ${p.client}</div>
+    <div><strong>Address:</strong> ${p.address}</div>
+    <div><strong>Budget:</strong> $${p.budget}</div>
+    <div><strong>Start:</strong> ${p.start}</div>
+    <div><strong>End:</strong> ${p.end}</div>
+    <div><strong>Notes:</strong> ${p.notes}</div>`;
+  const links = document.getElementById('tradeLinks');
+  links.innerHTML = '';
+  p.selectedTrades.forEach(trade => {
+    const btn = document.createElement('button');
+    btn.textContent = trade;
+    btn.className = "px-3 py-1 bg-[#5F7C8D] text-white rounded";
+    btn.onclick = () => goTo(trade);
+    links.appendChild(btn);
+  });
+  goTo('project');
 }
+
 function deleteProject(id) {
   if (!confirm("Delete this project?")) return;
   projects = projects.filter(p => p.id !== id);
@@ -218,12 +259,12 @@ function deleteProject(id) {
   renderProjectsList();
 }
 
-// PAINTING MODULE
+// PAINTING
 function addWall() {
-  const width = parseFloat(document.getElementById('wallWidth').value);
-  const height = parseFloat(document.getElementById('wallHeight').value);
-  if (!width || !height) return alert("Enter valid dimensions.");
-  walls.push({ width, height });
+  const w = parseFloat(document.getElementById('wallWidth').value);
+  const h = parseFloat(document.getElementById('wallHeight').value);
+  if (!w || !h) return alert("Enter valid wall size.");
+  walls.push({ width: w, height: h });
   renderWalls();
   calculatePaint();
 }
@@ -232,7 +273,7 @@ function renderWalls() {
   list.innerHTML = '';
   walls.forEach((w, i) => {
     const li = document.createElement('li');
-    li.textContent = `Wall ${i + 1}: ${w.width}m × ${w.height}m = ${(w.width * w.height).toFixed(2)} m²`;
+    li.textContent = `Wall ${i + 1}: ${w.width}m × ${w.height}m`;
     list.appendChild(li);
   });
 }
@@ -255,63 +296,77 @@ function savePaintingData() {
   alert("Painting data saved!");
 }
 
-// PLUMBING MODULE
+// PLUMBING
 function savePlumbingData() {
-  const fixtureCount = parseInt(document.getElementById('fixtureCount').value);
-  const pipeLength = parseFloat(document.getElementById('pipeLength').value);
-  const installTime = parseFloat(document.getElementById('installTime').value);
   if (!currentProjectId) return openProjectPicker('plumbing');
   const p = projects.find(p => p.id === currentProjectId);
   p.trades.plumbing = {
-    fixtureCount,
-    pipeLength,
-    installTime
+    fixtureCount: document.getElementById('fixtureCount').value,
+    pipeLength: document.getElementById('pipeLength').value,
+    installTime: document.getElementById('installTime').value
   };
   localStorage.setItem('projects', JSON.stringify(projects));
-  document.getElementById('plumbingEstimate').textContent = installTime.toFixed(2);
+  document.getElementById('plumbingEstimate').textContent = p.trades.plumbing.installTime;
   alert("Plumbing data saved.");
+}
+
+// ELECTRICAL
+function saveElectricalData() {
+  if (!currentProjectId) return openProjectPicker('electrical');
+  const p = projects.find(p => p.id === currentProjectId);
+  p.trades.electrical = {
+    outletCount: document.getElementById('outletCount').value,
+    wireLength: document.getElementById('wireLength').value,
+    breakerCount: document.getElementById('breakerCount').value
+  };
+  localStorage.setItem('projects', JSON.stringify(projects));
+  document.getElementById('electricalEstimate').textContent = (p.trades.electrical.outletCount * 1.5).toFixed(1);
+  alert("Electrical data saved.");
 }
 
 // SUMMARY
 function renderSummary() {
   const container = document.getElementById('summaryOutput');
-  if (!currentProjectId) {
-    container.innerHTML = "No project selected.";
-    return;
-  }
+  if (!currentProjectId) return container.innerHTML = "No project selected.";
   const p = projects.find(p => p.id === currentProjectId);
   let html = `<div><strong>Project:</strong> ${p.name}</div>`;
   if (p.trades.painting) {
     const area = p.trades.painting.walls.reduce((sum, w) => sum + w.width * w.height, 0);
     const coats = p.trades.painting.coats || 1;
     const coverage = p.trades.painting.coverage || 10;
-    const totalPaint = (area * coats) / coverage;
+    const total = (area * coats) / coverage;
     html += `
       <hr class="my-2" />
-      <div><strong>🎨 Painting</strong></div>
-      <div>Total Wall Area: ${area.toFixed(2)} m²</div>
-      <div>Coats: ${coats}</div>
-      <div>Coverage: ${coverage} m²/L</div>
-      <div><strong>Total Paint:</strong> ${totalPaint.toFixed(2)} L</div>
-    `;
+      <strong>🎨 Painting</strong><br>
+      Area: ${area.toFixed(2)} m²<br>
+      Coats: ${coats}<br>
+      Paint Needed: ${total.toFixed(2)} L`;
   }
   if (p.trades.plumbing) {
     html += `
       <hr class="my-2" />
-      <div><strong>🔧 Plumbing</strong></div>
-      <div>Fixtures: ${p.trades.plumbing.fixtureCount}</div>
-      <div>Piping: ${p.trades.plumbing.pipeLength} m</div>
-      <div>Estimated Install Time: ${p.trades.plumbing.installTime} hrs</div>
-    `;
+      <strong>🔧 Plumbing</strong><br>
+      Fixtures: ${p.trades.plumbing.fixtureCount}<br>
+      Pipes: ${p.trades.plumbing.pipeLength} m<br>
+      Time: ${p.trades.plumbing.installTime} hrs`;
+  }
+  if (p.trades.electrical) {
+    html += `
+      <hr class="my-2" />
+      <strong>⚡ Electrical</strong><br>
+      Outlets: ${p.trades.electrical.outletCount}<br>
+      Wire: ${p.trades.electrical.wireLength} m<br>
+      Breakers: ${p.trades.electrical.breakerCount}`;
   }
   container.innerHTML = html;
 }
 
 // MODAL
 let modalReturnTo = null;
-function openProjectPicker(returnTo) {
-  modalReturnTo = returnTo;
-  document.getElementById('projectPickerModal').classList.remove('hidden');
+function openProjectPicker(trade) {
+  modalReturnTo = trade;
+  const modal = document.getElementById('projectPickerModal');
+  modal.classList.remove('hidden');
   const list = document.getElementById('projectPickerList');
   list.innerHTML = '';
   projects.forEach(p => {
@@ -320,9 +375,10 @@ function openProjectPicker(returnTo) {
     btn.className = "w-full text-left bg-[#EFF2F5] hover:bg-[#dee2e6] px-3 py-2 rounded";
     btn.onclick = () => {
       currentProjectId = p.id;
-      document.getElementById('projectPickerModal').classList.add('hidden');
+      modal.classList.add('hidden');
       if (modalReturnTo === 'painting') savePaintingData();
       if (modalReturnTo === 'plumbing') savePlumbingData();
+      if (modalReturnTo === 'electrical') saveElectricalData();
     };
     list.appendChild(btn);
   });
@@ -333,7 +389,7 @@ function closeProjectPicker() {
 }
 
 // INIT
-showPage();
+goTo('dashboard');
 </script>
 </body>
 </html>
