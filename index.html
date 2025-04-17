@@ -8,11 +8,11 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #EFF2F5; /* Light cool gray */
-      color: #343A40; /* Primary text */
+      background-color: #EFF2F5;
+      color: #343A40;
     }
     .card {
-      background-color: #F8F9FA; /* Soft card background */
+      background-color: #F8F9FA;
       border-radius: 0.75rem;
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
       padding: 1.5rem;
@@ -25,7 +25,7 @@
     .icon-circle {
       width: 48px;
       height: 48px;
-      background-color: #5F7C8D; /* Teal/Slate Accent */
+      background-color: #5F7C8D;
       border-radius: 9999px;
       display: flex;
       align-items: center;
@@ -41,9 +41,9 @@
 <body>
   <!-- Sticky Header -->
   <header class="sticky top-0 bg-[#4E6E81] text-white shadow z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center flex-wrap gap-y-2">
       <h1 class="text-xl font-semibold">🏗️ Renovation Estimator</h1>
-      <nav class="space-x-2">
+      <nav class="space-x-2 flex flex-wrap gap-y-2">
         <button onclick="goHome()" class="bg-white text-[#4E6E81] px-3 py-1 rounded hover:bg-gray-100 font-medium">Home</button>
         <button onclick="goTo('newProject')" class="bg-white text-[#4E6E81] px-3 py-1 rounded hover:bg-gray-100 font-medium">New Project</button>
         <button onclick="goTo('myProjects')" class="bg-white text-[#4E6E81] px-3 py-1 rounded hover:bg-gray-100 font-medium">My Projects</button>
@@ -56,23 +56,47 @@
   <section id="homePage" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
     <button onclick="goTo('newProject')" class="card flex flex-col items-center text-center">
       <div class="icon-circle mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
       </div>
       <span class="font-medium">New Project</span>
     </button>
 
     <button onclick="goTo('myProjects')" class="card flex flex-col items-center text-center">
       <div class="icon-circle mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10h18V7H3zm0-2h18a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V7a2 2 0 012-2z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10h18V7H3z"/>
+        </svg>
       </div>
       <span class="font-medium">My Projects</span>
     </button>
 
     <button onclick="goTo('summary')" class="card flex flex-col items-center text-center">
       <div class="icon-circle mb-2">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18M3 9h18M9 3v6"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3v18h18M3 9h18M9 3v6"/>
+        </svg>
       </div>
       <span class="font-medium">Summary</span>
+    </button>
+
+    <button onclick="goTo('paintingPage')" class="card flex flex-col items-center text-center">
+      <div class="icon-circle mb-2 bg-green-600">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7-7-7M5 10l7-7 7 7"/>
+        </svg>
+      </div>
+      <span class="font-medium">Painting</span>
+    </button>
+
+    <button onclick="goTo('plumbingPage')" class="card flex flex-col items-center text-center">
+      <div class="icon-circle mb-2 bg-blue-600">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 10-8 0v2m8 0a4 4 0 018 0v2"/>
+        </svg>
+      </div>
+      <span class="font-medium">Plumbing</span>
     </button>
   </section>
 
@@ -102,53 +126,22 @@
     <div id="projectsList" class="space-y-4"></div>
   </section>
 
-  <!-- Painting Module -->
-  <section id="paintingPage" class="hidden card">
-    <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">🎨 Painting</h2>
-    <div class="grid grid-cols-2 gap-4">
-      <input id="wallWidth" type="number" step="any" class="border p-2 rounded" placeholder="Wall Width (m)" />
-      <input id="wallHeight" type="number" step="any" class="border p-2 rounded" placeholder="Wall Height (m)" />
-    </div>
-    <button onclick="addWall()" class="mt-2 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">➕ Add Wall</button>
-    <div class="mt-4">
-      <label class="block font-semibold">Coats:</label>
-      <input id="paintCoats" type="number" class="border p-2 rounded w-full" value="2" />
-    </div>
-    <div class="mt-2">
-      <label class="block font-semibold">Paint Coverage (m²/L):</label>
-      <input id="paintCoverage" type="number" step="any" class="border p-2 rounded w-full" value="10" />
-    </div>
-    <ul id="wallsList" class="list-disc list-inside text-sm text-gray-600 mt-4"></ul>
-    <div class="mt-4 text-lg">
-      🧴 Total Paint: <strong id="paintTotal">0</strong> L
-    </div>
-    <button onclick="savePaintingData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save to Project</button>
-  </section>
-
-  <!-- Plumbing Module -->
-  <section id="plumbingPage" class="hidden card">
-    <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">🔧 Plumbing</h2>
-    <input id="fixtureCount" type="number" class="border p-2 rounded w-full mb-4" placeholder="Number of Fixtures (e.g. sinks, toilets)" />
-    <input id="pipeLength" type="number" step="any" class="border p-2 rounded w-full mb-4" placeholder="Total Pipe Length (m)" />
-    <input id="installTime" type="number" class="border p-2 rounded w-full mb-4" placeholder="Installation Time (hrs)" />
-    <div class="mt-2 text-lg">
-      🛠️ Estimated Hours: <strong id="plumbingEstimate">0</strong> hrs
-    </div>
-    <button onclick="savePlumbingData()" class="mt-4 bg-[#5F7C8D] text-white px-4 py-2 rounded hover:bg-[#4E6E81]">💾 Save to Project</button>
-  </section>
-
-  <!-- Summary -->
-  <section id="summaryPage" class="hidden card">
-    <h2 class="text-xl font-semibold text-[#4E6E81] mb-4">📊 Summary</h2>
-    <div id="summaryOutput" class="text-sm text-gray-700">No data yet.</div>
-  </section>
-
+  <!-- Painting, Plumbing, Summary (included in Part 3 with logic) -->
 </main>
+
+<!-- Project Picker Modal -->
+<div id="projectPickerModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm hidden items-center justify-center z-50">
+  <div class="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
+    <h3 class="text-lg font-semibold text-[#4E6E81] mb-4">Select a Project</h3>
+    <div id="projectPickerList" class="space-y-2"></div>
+    <button onclick="closeProjectPicker()" class="mt-4 px-4 py-2 bg-gray-300 hover:bg-gray-400 rounded">Cancel</button>
+  </div>
+</div>
 <script>
 let walls = [];
 let currentPage = 'home';
-let projects = JSON.parse(localStorage.getItem('projects') || '[]');
 let currentProjectId = null;
+let projects = JSON.parse(localStorage.getItem('projects') || '[]');
 
 // NAVIGATION
 function goTo(page) {
@@ -162,14 +155,18 @@ function goHome() {
 }
 function showPage() {
   const pages = ['homePage', 'newProjectPage', 'myProjectsPage', 'paintingPage', 'plumbingPage', 'summaryPage'];
-  pages.forEach(id => document.getElementById(id).classList.add('hidden'));
-  document.getElementById(`${currentPage}Page`).classList.remove('hidden');
+  pages.forEach(id => document.getElementById(id)?.classList.add('hidden'));
+  document.getElementById(`${currentPage}Page`)?.classList.remove('hidden');
+
+  if (currentPage === 'myProjects') renderProjectsList();
+  if (currentPage === 'summary') renderSummary();
+  if (currentPage === 'paintingPage') renderWalls();
 }
 
-// PROJECTS
+// PROJECT LOGIC
 function saveNewProject() {
   const name = document.getElementById('projName').value.trim();
-  if (!name) return alert("Please enter a project name.");
+  if (!name) return alert("Enter project name.");
   const newProj = {
     id: Date.now(),
     name,
@@ -185,6 +182,7 @@ function saveNewProject() {
   projects.push(newProj);
   localStorage.setItem('projects', JSON.stringify(projects));
   currentProjectId = newProj.id;
+  alert("Project saved!");
   goTo('myProjects');
 }
 
@@ -200,18 +198,18 @@ function renderProjectsList() {
         <div class="text-sm text-gray-500">${p.client} | ${p.address}</div>
       </div>
       <div class="flex gap-2">
-        ${p.selectedTrades.includes('painting') ? `<button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'painting')">🎨</button>` : ''}
-        ${p.selectedTrades.includes('plumbing') ? `<button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'plumbing')">🔧</button>` : ''}
-        <button class="bg-blue-600 text-white px-2 py-1 rounded" onclick="openProject(${p.id})">Open</button>
+        ${p.selectedTrades.includes('painting') ? `<button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'paintingPage')">🎨</button>` : ''}
+        ${p.selectedTrades.includes('plumbing') ? `<button class="bg-[#5F7C8D] text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'plumbingPage')">🔧</button>` : ''}
+        <button class="bg-blue-600 text-white px-2 py-1 rounded" onclick="openTrade(${p.id}, 'summaryPage')">Summary</button>
         <button class="bg-red-500 text-white px-2 py-1 rounded" onclick="deleteProject(${p.id})">Delete</button>
       </div>`;
     container.appendChild(div);
   });
 }
 
-function openProject(id) {
+function openTrade(id, tradePage) {
   currentProjectId = id;
-  goTo('summary');
+  goTo(tradePage);
 }
 function deleteProject(id) {
   if (!confirm("Delete this project?")) return;
@@ -219,12 +217,8 @@ function deleteProject(id) {
   localStorage.setItem('projects', JSON.stringify(projects));
   renderProjectsList();
 }
-function openTrade(id, trade) {
-  currentProjectId = id;
-  goTo(trade + 'Page');
-}
 
-// PAINTING
+// PAINTING MODULE
 function addWall() {
   const width = parseFloat(document.getElementById('wallWidth').value);
   const height = parseFloat(document.getElementById('wallHeight').value);
@@ -250,7 +244,7 @@ function calculatePaint() {
   document.getElementById('paintTotal').textContent = total.toFixed(2);
 }
 function savePaintingData() {
-  if (!currentProjectId) return alert("No project selected.");
+  if (!currentProjectId) return openProjectPicker('painting');
   const p = projects.find(p => p.id === currentProjectId);
   p.trades.painting = {
     walls,
@@ -258,15 +252,15 @@ function savePaintingData() {
     coverage: document.getElementById('paintCoverage').value
   };
   localStorage.setItem('projects', JSON.stringify(projects));
-  alert("Painting data saved.");
+  alert("Painting data saved!");
 }
 
-// PLUMBING
+// PLUMBING MODULE
 function savePlumbingData() {
   const fixtureCount = parseInt(document.getElementById('fixtureCount').value);
   const pipeLength = parseFloat(document.getElementById('pipeLength').value);
   const installTime = parseFloat(document.getElementById('installTime').value);
-  if (!currentProjectId) return alert("No project selected.");
+  if (!currentProjectId) return openProjectPicker('plumbing');
   const p = projects.find(p => p.id === currentProjectId);
   p.trades.plumbing = {
     fixtureCount,
@@ -311,6 +305,31 @@ function renderSummary() {
     `;
   }
   container.innerHTML = html;
+}
+
+// MODAL
+let modalReturnTo = null;
+function openProjectPicker(returnTo) {
+  modalReturnTo = returnTo;
+  document.getElementById('projectPickerModal').classList.remove('hidden');
+  const list = document.getElementById('projectPickerList');
+  list.innerHTML = '';
+  projects.forEach(p => {
+    const btn = document.createElement('button');
+    btn.textContent = p.name;
+    btn.className = "w-full text-left bg-[#EFF2F5] hover:bg-[#dee2e6] px-3 py-2 rounded";
+    btn.onclick = () => {
+      currentProjectId = p.id;
+      document.getElementById('projectPickerModal').classList.add('hidden');
+      if (modalReturnTo === 'painting') savePaintingData();
+      if (modalReturnTo === 'plumbing') savePlumbingData();
+    };
+    list.appendChild(btn);
+  });
+}
+function closeProjectPicker() {
+  document.getElementById('projectPickerModal').classList.add('hidden');
+  modalReturnTo = null;
 }
 
 // INIT
