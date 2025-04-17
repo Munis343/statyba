@@ -2,119 +2,99 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta-name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Renovation Estimator</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .grid-tile {
-      @apply flex flex-col items-center justify-center text-center bg-white rounded-xl shadow-md p-6 transition hover:scale-105 hover:bg-blue-50;
-    }
-    .grid-tile span {
-      @apply mt-2 font-medium text-sm text-gray-700;
-    }
-    .section {
-      @apply max-w-5xl mx-auto bg-white p-6 rounded-xl shadow-md space-y-6;
-    }
-    .input {
-      @apply w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200;
-    }
-    .btn {
-      @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition;
-    }
-    .btn-danger {
-      @apply bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md;
-    }
-  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
-<!-- Header Navigation -->
-<header id="mainHeader" class="flex justify-between items-center p-4 bg-white shadow sticky top-0 z-50 hidden">
-  <h1 class="text-xl font-bold text-blue-700">🏗️ Renovation Estimator</h1>
-  <div class="flex gap-2">
-    <button onclick="goHome()" class="btn">🏠 Home</button>
-    <button onclick="goTo('newProject')" class="btn">➕ New Project</button>
-    <button onclick="goTo('myProjects')" class="btn">📁 My Projects</button>
+<body class="bg-gray-100 text-gray-800 font-sans">
+<!-- Header -->
+<header id="mainHeader" class="hidden sticky top-0 bg-white shadow p-4 flex justify-between items-center z-50">
+  <h1 class="text-lg font-bold text-blue-600">🏗️ Renovation Estimator</h1>
+  <div class="space-x-2">
+    <button onclick="goHome()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">🏠 Home</button>
+    <button onclick="goTo('newProject')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">➕ New Project</button>
+    <button onclick="goTo('myProjects')" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">📁 My Projects</button>
   </div>
 </header>
 
-<!-- App Pages -->
-<main id="app" class="p-6 space-y-10 max-w-6xl mx-auto">
+<!-- App Content -->
+<main id="app" class="max-w-6xl mx-auto p-6 space-y-10">
 
-  <!-- Homepage (Grid Navigation) -->
+  <!-- Home Grid -->
   <section id="homePage" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-    <button onclick="goTo('newProject')" class="grid-tile"><div class="text-3xl">➕</div><span>New Project</span></button>
-    <button onclick="goTo('myProjects')" class="grid-tile"><div class="text-3xl">📁</div><span>My Projects</span></button>
-    <button onclick="goTo('summary')" class="grid-tile"><div class="text-3xl">📊</div><span>Summary</span></button>
-    <button onclick="goToTrade('painting')" class="grid-tile"><div class="text-3xl">🎨</div><span>Painting</span></button>
+    <button onclick="goTo('newProject')" class="bg-white rounded-xl p-6 shadow hover:bg-blue-50 flex flex-col items-center">
+      <div class="text-3xl">➕</div><span class="mt-2 font-medium text-sm">New Project</span>
+    </button>
+    <button onclick="goTo('myProjects')" class="bg-white rounded-xl p-6 shadow hover:bg-blue-50 flex flex-col items-center">
+      <div class="text-3xl">📁</div><span class="mt-2 font-medium text-sm">My Projects</span>
+    </button>
+    <button onclick="goTo('summary')" class="bg-white rounded-xl p-6 shadow hover:bg-blue-50 flex flex-col items-center">
+      <div class="text-3xl">📊</div><span class="mt-2 font-medium text-sm">Summary</span>
+    </button>
+    <button onclick="goToTrade('painting')" class="bg-white rounded-xl p-6 shadow hover:bg-blue-50 flex flex-col items-center">
+      <div class="text-3xl">🎨</div><span class="mt-2 font-medium text-sm">Painting</span>
+    </button>
   </section>
 
-  <!-- New Project Page -->
-  <section id="newProjectPage" class="section hidden">
-    <h2 class="text-xl font-semibold text-blue-700">➕ New Project</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <input id="projName" class="input" placeholder="Project Name" />
-      <input id="projClient" class="input" placeholder="Client Name" />
-      <input id="projAddress" class="input md:col-span-2" placeholder="Address" />
-      <input type="date" id="projStart" class="input" />
-      <input type="date" id="projEnd" class="input" />
-      <input type="number" id="projBudget" class="input" placeholder="Estimated Budget" />
+  <!-- New Project -->
+  <section id="newProjectPage" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
+    <h2 class="text-xl font-semibold text-blue-600">➕ New Project</h2>
+    <div class="grid md:grid-cols-2 gap-4">
+      <input id="projName" class="border p-2 rounded w-full" placeholder="Project Name" />
+      <input id="projClient" class="border p-2 rounded w-full" placeholder="Client Name" />
+      <input id="projAddress" class="border p-2 rounded md:col-span-2" placeholder="Address" />
+      <input id="projStart" type="date" class="border p-2 rounded w-full" />
+      <input id="projEnd" type="date" class="border p-2 rounded w-full" />
+      <input id="projBudget" type="number" class="border p-2 rounded w-full" placeholder="Estimated Budget" />
     </div>
-    <div class="mt-4">
-      <label class="block font-semibold">Select Trades:</label>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
-        <label><input type="checkbox" value="painting" class="mr-2" /> 🎨 Painting</label>
-      </div>
+    <div>
+      <label class="block font-semibold">Trades:</label>
+      <label class="inline-flex items-center gap-2 mt-1">
+        <input type="checkbox" value="painting" />
+        🎨 Painting
+      </label>
     </div>
-    <div class="mt-4">
-      <label class="block font-semibold">Notes:</label>
-      <textarea id="projNotes" class="input" rows="4" placeholder="Project notes..."></textarea>
-    </div>
-    <button onclick="saveNewProject()" class="btn mt-4">💾 Save Project</button>
+    <textarea id="projNotes" class="w-full border p-2 rounded mt-4" rows="3" placeholder="Project notes..."></textarea>
+    <button onclick="saveNewProject()" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">💾 Save Project</button>
   </section>
 
-  <!-- My Projects Page -->
-  <section id="myProjectsPage" class="section hidden">
-    <h2 class="text-xl font-semibold text-blue-700">📁 My Projects</h2>
+  <!-- My Projects -->
+  <section id="myProjectsPage" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
+    <h2 class="text-xl font-semibold text-blue-600">📁 My Projects</h2>
     <div id="projectsList" class="space-y-4"></div>
   </section>
 
   <!-- Painting Module -->
-  <section id="paintingPage" class="section hidden">
-    <h2 class="text-xl font-semibold text-blue-700">🎨 Painting Module</h2>
+  <section id="paintingPage" class="hidden bg-white p-6 rounded-xl shadow space-y-4">
+    <h2 class="text-xl font-semibold text-blue-600">🎨 Painting Calculator</h2>
     <div class="grid grid-cols-2 gap-4">
-      <input id="wallWidth" type="number" step="any" class="input" placeholder="Wall Width (m)" />
-      <input id="wallHeight" type="number" step="any" class="input" placeholder="Wall Height (m)" />
+      <input id="wallWidth" type="number" step="any" class="border p-2 rounded w-full" placeholder="Wall Width (m)" />
+      <input id="wallHeight" type="number" step="any" class="border p-2 rounded w-full" placeholder="Wall Height (m)" />
     </div>
-    <button onclick="addWall()" class="btn mt-2">➕ Add Wall</button>
+    <button onclick="addWall()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">➕ Add Wall</button>
 
-    <div class="mt-4">
-      <label class="block font-semibold">Coats:</label>
-      <input id="paintCoats" type="number" class="input" value="2" />
+    <div>
+      <label class="block font-semibold mt-4">Coats:</label>
+      <input id="paintCoats" type="number" class="border p-2 rounded w-full" value="2" />
     </div>
-    <div class="mt-2">
-      <label class="block font-semibold">Paint Coverage (m²/L):</label>
-      <input id="paintCoverage" type="number" class="input" value="10" />
+    <div>
+      <label class="block font-semibold mt-2">Paint Coverage (m²/L):</label>
+      <input id="paintCoverage" type="number" step="any" class="border p-2 rounded w-full" value="10" />
     </div>
 
-    <div class="mt-4">
-      <h3 class="font-semibold">🧱 Walls Added:</h3>
-      <ul id="wallsList" class="list-disc list-inside text-sm text-gray-600"></ul>
-    </div>
+    <ul id="wallsList" class="list-disc list-inside text-sm text-gray-600 mt-4"></ul>
 
     <div class="mt-4 text-lg">
       🧴 Total Paint Needed: <strong id="paintTotal">0</strong> L
     </div>
 
-    <button onclick="savePaintingData()" class="btn mt-4">💾 Save to Project</button>
+    <button onclick="savePaintingData()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4">💾 Save to Project</button>
   </section>
 
-  <!-- Summary Page -->
-  <section id="summaryPage" class="section hidden">
-    <h2 class="text-xl font-semibold text-blue-700">📊 Project Summary</h2>
-    <div id="summaryOutput" class="text-gray-700 text-sm">Summary coming soon...</div>
+  <!-- Summary -->
+  <section id="summaryPage" class="hidden bg-white p-6 rounded-xl shadow space-y-2">
+    <h2 class="text-xl font-semibold text-blue-600">📊 Project Summary</h2>
+    <div id="summaryOutput" class="text-sm text-gray-700">No project selected.</div>
   </section>
 </main>
 <script>
@@ -173,15 +153,15 @@ function renderProjectsList() {
   container.innerHTML = '';
   projects.forEach(p => {
     const div = document.createElement('div');
-    div.className = "p-4 border rounded shadow flex justify-between items-center";
+    div.className = "p-4 border rounded shadow flex justify-between items-center bg-white";
     div.innerHTML = `
       <div>
         <div class="font-bold">${p.name}</div>
         <div class="text-sm text-gray-500">${p.client} | ${p.address}</div>
       </div>
       <div class="flex gap-2">
-        <button class="btn" onclick="openProject(${p.id})">Open</button>
-        <button class="btn-danger" onclick="deleteProject(${p.id})">Delete</button>
+        <button class="bg-blue-600 text-white px-4 py-1 rounded" onclick="openProject(${p.id})">Open</button>
+        <button class="bg-red-500 text-white px-4 py-1 rounded" onclick="deleteProject(${p.id})">Delete</button>
       </div>`;
     container.appendChild(div);
   });
@@ -193,7 +173,7 @@ function openProject(id) {
   if (p.selectedTrades.includes('painting')) {
     goTo('painting');
   } else {
-    alert("This project doesn't include painting.");
+    alert("No Painting trade in this project.");
   }
 }
 
@@ -204,11 +184,11 @@ function deleteProject(id) {
   renderProjectsList();
 }
 
-// --- Painting Module ---
+// Painting logic
 function addWall() {
   const width = parseFloat(document.getElementById('wallWidth').value);
   const height = parseFloat(document.getElementById('wallHeight').value);
-  if (!width || !height) return alert("Enter valid width and height.");
+  if (!width || !height) return alert("Enter valid wall dimensions.");
   walls.push({ width, height });
   renderWalls();
   calculatePaint();
@@ -252,7 +232,7 @@ function goToTrade(tradeName) {
   if (p.selectedTrades.includes(tradeName)) {
     goTo(tradeName);
   } else {
-    alert(`This project does not include the ${tradeName} trade.`);
+    alert(`This project doesn't include the ${tradeName} trade.`);
   }
 }
 
@@ -262,28 +242,28 @@ function renderSummary() {
     container.innerHTML = "No project selected.";
     return;
   }
-  const p = projects.find(p => p.id === currentProjectId);
-  let html = `<div><strong>Project:</strong> ${p.name}</div>`;
-  if (p.trades.painting) {
-    const area = p.trades.painting.walls.reduce((sum, w) => sum + w.width * w.height, 0);
-    const coats = p.trades.painting.coats || 1;
-    const coverage = p.trades.painting.coverage || 10;
+  const proj = projects.find(p => p.id === currentProjectId);
+  let html = `<div><strong>Project:</strong> ${proj.name}</div>`;
+  if (proj.trades.painting) {
+    const area = proj.trades.painting.walls.reduce((sum, w) => sum + w.width * w.height, 0);
+    const coats = proj.trades.painting.coats || 1;
+    const coverage = proj.trades.painting.coverage || 10;
     const totalPaint = (area * coats) / coverage;
     html += `
       <hr class="my-2" />
       <div><strong>🎨 Painting</strong></div>
-      <div>Total Wall Area: ${area.toFixed(2)} m²</div>
+      <div>Total Area: ${area.toFixed(2)} m²</div>
       <div>Coats: ${coats}</div>
       <div>Coverage: ${coverage} m²/L</div>
       <div><strong>Total Paint:</strong> ${totalPaint.toFixed(2)} L</div>
     `;
   } else {
-    html += `<div>No painting data saved yet.</div>`;
+    html += `<div>No painting data found.</div>`;
   }
   container.innerHTML = html;
 }
 
-// Initialize
+// Start app
 showPage();
 </script>
 </body>
