@@ -5,320 +5,509 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Pro Paint Calculator</title>
   <script defer src="script.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-50 text-gray-800 font-sans">
-
-  <div class="max-w-4xl mx-auto p-6">
-    <h1 class="text-2xl font-semibold mb-6 text-center text-[#205781]">Pro Paint Calculator</h1>
-
-    <!-- Tabs -->
-    <div class="flex space-x-4 mb-6">
-      <button id="tab-wall" class="tab-btn text-[#205781] font-semibold border-b-2 border-[#205781]">Wall Dimensions</button>
-      <button id="tab-room" class="tab-btn text-gray-500">Room Dimensions</button>
-      <button id="tab-total" class="tab-btn text-gray-500">Total Area</button>
-    </div>
-
-    <!-- Wall Dimensions Form -->
-    <div id="wall-form" class="tab-content space-y-6">
-      <div>
-        <h2 class="font-bold text-[#205781] text-lg">Walls</h2>
-        <div id="wallsContainer" class="space-y-2 mt-2"></div>
-        <button id="addWallBtn" class="bg-[#4F959D] text-white px-4 py-1 rounded hover:bg-[#3f7b85]">Add Wall</button>
-      </div>
-
-      <div>
-        <h2 class="font-bold text-[#205781] text-lg">Ceilings</h2>
-        <div id="ceilingsContainer" class="space-y-2 mt-2"></div>
-        <button id="addCeilingBtn" class="bg-[#4F959D] text-white px-4 py-1 rounded hover:bg-[#3f7b85]">Add Ceiling</button>
-      </div>
-
-      <div>
-        <h2 class="font-bold text-[#205781] text-lg">Subtract Doors and Windows (optional)</h2>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label for="doorArea" class="block font-medium">Door Area (m²):</label>
-            <input id="doorArea" type="number" step="0.01" class="input" />
-          </div>
-          <div>
-            <label for="windowArea" class="block font-medium">Window Area (m²):</label>
-            <input id="windowArea" type="number" step="0.01" class="input" />
-          </div>
-        </div>
-        <!-- Room Dimensions Form -->
-<div id="room-form" class="tab-content space-y-6">
-  <div>
-    <h2 class="font-bold text-[#205781] text-lg">Room Dimensions</h2>
-    <div class="grid grid-cols-3 gap-4">
-      <div>
-        <label class="block">Length (m):</label>
-        <input id="roomLength" type="number" step="0.01" class="input" />
-      </div>
-      <div>
-        <label class="block">Width (m):</label>
-        <input id="roomWidth" type="number" step="0.01" class="input" />
-      </div>
-      <div>
-        <label class="block">Height (m):</label>
-        <input id="roomHeight" type="number" step="0.01" class="input" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-2 gap-6">
-    <div>
-      <h2 class="font-bold text-[#205781] text-lg">Wall Paint Details</h2>
-      <label class="block">Coverage Rate:</label>
-      <input id="roomWallCoverage" type="number" class="input" />
-      <label class="block mt-2">Coats:</label>
-      <input id="roomWallCoats" type="number" class="input" />
-    </div>
-    <div>
-      <h2 class="font-bold text-[#205781] text-lg">Ceiling Paint Details</h2>
-      <label class="block">Coverage Rate:</label>
-      <input id="roomCeilingCoverage" type="number" class="input" />
-      <label class="block mt-2">Coats:</label>
-      <input id="roomCeilingCoats" type="number" class="input" />
-    </div>
-  </div>
-
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <label class="block font-medium mt-4">Job Price (per m²):</label>
-      <input id="roomJobPrice" type="number" class="input" />
-    </div>
-    <div>
-      <label class="block font-medium mt-4">Paint Price (per liter):</label>
-      <input id="roomPaintPrice" type="number" class="input" />
-    </div>
-  </div>
-
-  <button id="roomCalculateBtn" class="w-full mt-6 bg-[#D9534F] hover:bg-red-600 text-white font-semibold py-2 rounded">
-    Calculate
-  </button>
-
-  <div id="roomResults" class="bg-green-100 p-4 rounded mt-4 text-sm space-y-2">
-    <!-- Room Results Here -->
-  </div>
-</div>
-
-<!-- Total Area Form -->
-<div id="total-form" class="tab-content space-y-6">
-  <div>
-    <h2 class="font-bold text-[#205781] text-lg">Manual Surface Areas</h2>
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <label>Wall Area (m²):</label>
-        <input id="totalWallArea" type="number" class="input" />
-      </div>
-      <div>
-        <label>Ceiling Area (m²):</label>
-        <input id="totalCeilingArea" type="number" class="input" />
-      </div>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-2 gap-6">
-    <div>
-      <h2 class="font-bold text-[#205781] text-lg">Wall Paint Details</h2>
-      <label class="block">Coverage Rate:</label>
-      <input id="totalWallCoverage" type="number" class="input" />
-      <label class="block mt-2">Coats:</label>
-      <input id="totalWallCoats" type="number" class="input" />
-    </div>
-    <div>
-      <h2 class="font-bold text-[#205781] text-lg">Ceiling Paint Details</h2>
-      <label class="block">Coverage Rate:</label>
-      <input id="totalCeilingCoverage" type="number" class="input" />
-      <label class="block mt-2">Coats:</label>
-      <input id="totalCeilingCoats" type="number" class="input" />
-    </div>
-  </div>
-
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <label class="block font-medium mt-4">Job Price (per m²):</label>
-      <input id="totalJobPrice" type="number" class="input" />
-    </div>
-    <div>
-      <label class="block font-medium mt-4">Paint Price (per liter):</label>
-      <input id="totalPaintPrice" type="number" class="input" />
-    </div>
-  </div>
-
-  <button id="totalCalculateBtn" class="w-full mt-6 bg-[#D9534F] hover:bg-red-600 text-white font-semibold py-2 rounded">
-    Calculate
-  </button>
-
-  <div id="totalResults" class="bg-green-100 p-4 rounded mt-4 text-sm space-y-2">
-    <!-- Total Results Here -->
-  </div>
-</div>
-      </div>
-
-      <!-- Wall and Ceiling Paint Details -->
-      <div class="grid grid-cols-2 gap-6">
-        <div>
-          <h2 class="font-bold text-[#205781] text-lg">Wall Paint Details</h2>
-          <label class="block">Coverage Rate:</label>
-          <input id="wallCoverage" type="number" class="input" placeholder="sq m / liter">
-          <label class="block mt-2">Coats:</label>
-          <input id="wallCoats" type="number" class="input">
-        </div>
-        <div>
-          <h2 class="font-bold text-[#205781] text-lg">Ceiling Paint Details</h2>
-          <label class="block">Coverage Rate:</label>
-          <input id="ceilingCoverage" type="number" class="input" placeholder="sq m / liter">
-          <label class="block mt-2">Coats:</label>
-          <input id="ceilingCoats" type="number" class="input">
-        </div>
-      </div>
-
-      <!-- Pricing Section -->
-      <div class="grid grid-cols-2 gap-4">
-        <div>
-          <label for="jobPrice" class="block font-medium mt-4">Job Price (per m²):</label>
-          <input id="jobPrice" type="number" step="0.01" class="input">
-        </div>
-        <div>
-          <label for="paintPrice" class="block font-medium mt-4">Paint Price (per liter):</label>
-          <input id="paintPrice" type="number" step="0.01" class="input">
-        </div>
-      </div>
-
-      <button id="calculateBtn" class="w-full mt-6 bg-[#D9534F] hover:bg-red-600 text-white font-semibold py-2 rounded">
-        Calculate
-      </button>
-
-      <div id="results" class="bg-green-100 p-4 rounded mt-4 text-sm space-y-2">
-        <!-- Calculation results will be inserted here -->
-      </div>
-    </div>
-
-    <!-- Other tabs content (Room & Total) will be added in Part 2 -->
-  </div>
-
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
-    .tab-content { display: none; }
-    .tab-btn.active { border-color: #205781; color: #205781; }
-    .input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; }
+    body {
+      background-color: #f5f8fa;
+      font-family: 'Arial', sans-serif;
+    }
+    .tab-active {
+      border-bottom: 3px solid #205781;
+      font-weight: bold;
+      color: #205781;
+    }
+    .tab {
+      cursor: pointer;
+      padding: 10px 15px;
+      margin-right: 10px;
+    }
+    label {
+      min-width: 130px;
+      font-weight: 500;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .result-box {
+      background-color: #e6f5e9;
+      padding: 15px;
+      border-radius: 6px;
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 2rem;
+    }
   </style>
-  <script>
-const tabButtons = {
-  wall: document.getElementById('tab-wall'),
-  room: document.getElementById('tab-room'),
-  total: document.getElementById('tab-total')
-};
-const forms = {
-  wall: document.getElementById('wall-form'),
-  room: document.getElementById('room-form'),
-  total: document.getElementById('total-form')
-};
+</head>
+<body class="p-8">
+  <h1 class="text-2xl font-bold text-center text-gray-800 mb-8">Pro Paint Calculator</h1>
 
-Object.keys(tabButtons).forEach(key => {
-  tabButtons[key].addEventListener('click', () => {
-    Object.keys(tabButtons).forEach(k => {
-      tabButtons[k].classList.remove('active', 'text-[#205781]');
-      tabButtons[k].classList.add('text-gray-500');
-      forms[k].style.display = 'none';
+  <div class="flex justify-center mb-6 space-x-6 border-b pb-2">
+    <div id="tab-wall" class="tab tab-active">Wall Dimensions</div>
+    <div id="tab-room" class="tab">Room Dimensions</div>
+    <div id="tab-total" class="tab">Total Area</div>
+  </div>
+
+  <div id="calculator-container">
+<!-- Wall Dimensions Tab -->
+<div id="wall-form" class="space-y-6">
+  <!-- Walls -->
+  <div>
+    <h2 class="text-lg font-semibold text-[#205781] mb-2">Walls</h2>
+    <div id="wallFields" class="space-y-2"></div>
+    <button id="addWallBtn" class="bg-[#4F959D] text-white text-sm px-4 py-1 rounded">Add Wall</button>
+  </div>
+
+  <!-- Ceilings -->
+  <div>
+    <h2 class="text-lg font-semibold text-[#205781] mt-4 mb-2">Ceilings</h2>
+    <div id="ceilingFields" class="space-y-2"></div>
+    <button id="addCeilingBtn" class="bg-[#4F959D] text-white text-sm px-4 py-1 rounded">Add Ceiling</button>
+  </div>
+
+  <!-- Subtract Openings -->
+  <div class="mt-6">
+    <h2 class="text-lg font-semibold text-[#205781] mb-2">Subtract Openings</h2>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="input-group">
+        <label for="doorArea">Door Area (m²):</label>
+        <input id="doorArea" type="number" step="0.01" class="flex-1 px-2 py-1 rounded border border-gray-300" />
+      </div>
+      <div class="input-group">
+        <label for="windowArea">Window Area (m²):</label>
+        <input id="windowArea" type="number" step="0.01" class="flex-1 px-2 py-1 rounded border border-gray-300" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Paint Details -->
+  <div class="grid grid-cols-2 gap-6 mt-6">
+    <!-- Wall -->
+    <div>
+      <h3 class="font-semibold text-[#205781] mb-2">Wall Paint</h3>
+      <div class="input-group">
+        <label for="wallCoverage">Coverage (m²/L):</label>
+        <input id="wallCoverage" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="wallCoats">Coats:</label>
+        <input id="wallCoats" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+
+    <!-- Ceiling -->
+    <div>
+      <h3 class="font-semibold text-[#205781] mb-2">Ceiling Paint</h3>
+      <div class="input-group">
+        <label for="ceilingCoverage">Coverage (m²/L):</label>
+        <input id="ceilingCoverage" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="ceilingCoats">Coats:</label>
+        <input id="ceilingCoats" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Price Inputs -->
+  <div class="grid grid-cols-2 gap-6 mt-4">
+    <div class="input-group">
+      <label for="jobPrice">Job Price (€/m²):</label>
+      <input id="jobPrice" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+    </div>
+    <div class="input-group">
+      <label for="paintPrice">Paint Price (€/L):</label>
+      <input id="paintPrice" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+    </div>
+  </div>
+
+  <!-- Buttons & Results -->
+  <div class="mt-6 space-y-3">
+    <button id="calculateBtn" class="w-full bg-[#D9534F] hover:bg-red-600 text-white py-2 rounded">Calculate</button>
+
+    <div class="flex gap-2">
+      <button id="saveBtn" class="flex-1 bg-[#205781] text-white py-2 rounded">Save</button>
+      <button id="exportBtn" class="flex-1 bg-[#4F959D] text-white py-2 rounded">Export JSON</button>
+      <button id="printBtn" class="flex-1 bg-gray-500 text-white py-2 rounded">Print</button>
+    </div>
+
+    <div id="results" class="result-box hidden text-sm">
+      <div id="wallResults" class="space-y-1 w-1/2"></div>
+      <div id="ceilingResults" class="space-y-1 w-1/2"></div>
+    </div>
+  </div>
+</div>
+<!-- Room Dimensions Tab -->
+<div id="room-form" class="space-y-6 hidden">
+  <!-- Room Size -->
+  <div>
+    <h2 class="text-lg font-semibold text-[#205781] mb-2">Room Size</h2>
+    <div class="grid grid-cols-3 gap-4">
+      <div class="input-group">
+        <label for="roomLength">Length (m):</label>
+        <input id="roomLength" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="roomWidth">Width (m):</label>
+        <input id="roomWidth" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="roomHeight">Height (m):</label>
+        <input id="roomHeight" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Paint Details -->
+  <div class="grid grid-cols-2 gap-6 mt-2">
+    <!-- Wall -->
+    <div>
+      <h3 class="font-semibold text-[#205781] mb-2">Wall Paint</h3>
+      <div class="input-group">
+        <label for="roomWallCoverage">Coverage (m²/L):</label>
+        <input id="roomWallCoverage" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="roomWallCoats">Coats:</label>
+        <input id="roomWallCoats" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+
+    <!-- Ceiling -->
+    <div>
+      <h3 class="font-semibold text-[#205781] mb-2">Ceiling Paint</h3>
+      <div class="input-group">
+        <label for="roomCeilingCoverage">Coverage (m²/L):</label>
+        <input id="roomCeilingCoverage" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="roomCeilingCoats">Coats:</label>
+        <input id="roomCeilingCoats" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="grid grid-cols-2 gap-6 mt-4">
+    <div class="input-group">
+      <label for="roomJobPrice">Job Price (€/m²):</label>
+      <input id="roomJobPrice" type="number" class="flex-1 px-2 py-1 rounded border" />
+    </div>
+    <div class="input-group">
+      <label for="roomPaintPrice">Paint Price (€/L):</label>
+      <input id="roomPaintPrice" type="number" class="flex-1 px-2 py-1 rounded border" />
+    </div>
+  </div>
+
+  <!-- Buttons & Results -->
+  <div class="mt-6 space-y-3">
+    <button id="roomCalculateBtn" class="w-full bg-[#D9534F] hover:bg-red-600 text-white py-2 rounded">Calculate</button>
+
+    <div class="flex gap-2">
+      <button id="roomSaveBtn" class="flex-1 bg-[#205781] text-white py-2 rounded">Save</button>
+      <button id="roomExportBtn" class="flex-1 bg-[#4F959D] text-white py-2 rounded">Export JSON</button>
+      <button id="roomPrintBtn" class="flex-1 bg-gray-500 text-white py-2 rounded">Print</button>
+    </div>
+
+    <div id="roomResults" class="result-box hidden text-sm">
+      <div id="roomWallResults" class="space-y-1 w-1/2"></div>
+      <div id="roomCeilingResults" class="space-y-1 w-1/2"></div>
+    </div>
+  </div>
+</div>
+<!-- Total Area Tab -->
+<div id="total-form" class="space-y-6 hidden">
+  <!-- Surface Areas -->
+  <div>
+    <h2 class="text-lg font-semibold text-[#205781] mb-2">Manual Surface Areas</h2>
+    <div class="grid grid-cols-2 gap-4">
+      <div class="input-group">
+        <label for="totalWallArea">Wall Area (m²):</label>
+        <input id="totalWallArea" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="totalCeilingArea">Ceiling Area (m²):</label>
+        <input id="totalCeilingArea" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Paint Details -->
+  <div class="grid grid-cols-2 gap-6 mt-2">
+    <!-- Wall -->
+    <div>
+      <h3 class="font-semibold text-[#205781] mb-2">Wall Paint</h3>
+      <div class="input-group">
+        <label for="totalWallCoverage">Coverage (m²/L):</label>
+        <input id="totalWallCoverage" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="totalWallCoats">Coats:</label>
+        <input id="totalWallCoats" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+
+    <!-- Ceiling -->
+    <div>
+      <h3 class="font-semibold text-[#205781] mb-2">Ceiling Paint</h3>
+      <div class="input-group">
+        <label for="totalCeilingCoverage">Coverage (m²/L):</label>
+        <input id="totalCeilingCoverage" type="number" step="0.1" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+      <div class="input-group">
+        <label for="totalCeilingCoats">Coats:</label>
+        <input id="totalCeilingCoats" type="number" class="flex-1 px-2 py-1 rounded border" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <div class="grid grid-cols-2 gap-6 mt-4">
+    <div class="input-group">
+      <label for="totalJobPrice">Job Price (€/m²):</label>
+      <input id="totalJobPrice" type="number" class="flex-1 px-2 py-1 rounded border" />
+    </div>
+    <div class="input-group">
+      <label for="totalPaintPrice">Paint Price (€/L):</label>
+      <input id="totalPaintPrice" type="number" class="flex-1 px-2 py-1 rounded border" />
+    </div>
+  </div>
+
+  <!-- Buttons & Results -->
+  <div class="mt-6 space-y-3">
+    <button id="totalCalculateBtn" class="w-full bg-[#D9534F] hover:bg-red-600 text-white py-2 rounded">Calculate</button>
+
+    <div class="flex gap-2">
+      <button id="totalSaveBtn" class="flex-1 bg-[#205781] text-white py-2 rounded">Save</button>
+      <button id="totalExportBtn" class="flex-1 bg-[#4F959D] text-white py-2 rounded">Export JSON</button>
+      <button id="totalPrintBtn" class="flex-1 bg-gray-500 text-white py-2 rounded">Print</button>
+    </div>
+
+    <div id="totalResults" class="result-box hidden text-sm">
+      <div id="totalWallResults" class="space-y-1 w-1/2"></div>
+      <div id="totalCeilingResults" class="space-y-1 w-1/2"></div>
+    </div>
+  </div>
+</div>
+<script>
+// === TAB SWITCHING ===
+const tabs = ['wall', 'room', 'total'];
+tabs.forEach(tab => {
+  document.getElementById(`tab-${tab}`).addEventListener('click', () => {
+    tabs.forEach(t => {
+      document.getElementById(`tab-${t}`).classList.remove('tab-active');
+      document.getElementById(`${t}-form`).classList.add('hidden');
     });
-    tabButtons[key].classList.add('active', 'text-[#205781]');
-    forms[key].style.display = 'block';
+    document.getElementById(`tab-${tab}`).classList.add('tab-active');
+    document.getElementById(`${tab}-form`).classList.remove('hidden');
   });
 });
-forms.wall.style.display = 'block'; // Default tab
 
-// Wall & Ceiling add/remove
-let wallCount = 0, ceilingCount = 0;
+// === WALL & CEILING ADDING ===
+let wallCount = 0;
+let ceilingCount = 0;
+
 document.getElementById('addWallBtn').onclick = () => {
   wallCount++;
   const div = document.createElement('div');
-  div.className = "flex gap-2 items-center";
+  div.className = "input-group";
   div.innerHTML = `
     <label>Wall ${wallCount}:</label>
-    <input type="number" class="w-20 px-2 py-1 rounded wall-width" placeholder="Width" />
-    <span>m</span>
-    <input type="number" class="w-20 px-2 py-1 rounded wall-height" placeholder="Height" />
-    <span>m</span>
-    <button onclick="this.parentElement.remove()" class="text-red-600 text-lg">×</button>
+    <input type="number" class="wall-width w-20 px-2 py-1 rounded border" placeholder="Width" />
+    <span class="mx-1">m</span>
+    <input type="number" class="wall-height w-20 px-2 py-1 rounded border" placeholder="Height" />
+    <span class="mx-2">m</span>
+    <button onclick="this.parentElement.remove()" class="text-red-600">×</button>
   `;
-  document.getElementById('wallsContainer').appendChild(div);
+  document.getElementById('wallFields').appendChild(div);
 };
 
 document.getElementById('addCeilingBtn').onclick = () => {
   ceilingCount++;
   const div = document.createElement('div');
-  div.className = "flex gap-2 items-center";
+  div.className = "input-group";
   div.innerHTML = `
     <label>Ceiling ${ceilingCount}:</label>
-    <input type="number" class="w-20 px-2 py-1 rounded ceiling-length" placeholder="Length" />
-    <span>m</span>
-    <input type="number" class="w-20 px-2 py-1 rounded ceiling-width" placeholder="Width" />
-    <span>m</span>
-    <button onclick="this.parentElement.remove()" class="text-red-600 text-lg">×</button>
+    <input type="number" class="ceiling-length w-20 px-2 py-1 rounded border" placeholder="Length" />
+    <span class="mx-1">m</span>
+    <input type="number" class="ceiling-width w-20 px-2 py-1 rounded border" placeholder="Width" />
+    <span class="mx-2">m</span>
+    <button onclick="this.parentElement.remove()" class="text-red-600">×</button>
   `;
-  document.getElementById('ceilingsContainer').appendChild(div);
+  document.getElementById('ceilingFields').appendChild(div);
 };
 
-// Calculation logic shared
+// === UNIVERSAL CALC HELPERS ===
+function calcArea(w, h) {
+  return (w || 0) * (h || 0);
+}
 function calcPaint(area, coats, coverage) {
   return (area * coats) / coverage;
 }
-function calcCost(area, rate) {
-  return area * rate;
+function calcCost(area, pricePerSq) {
+  return area * pricePerSq;
 }
-function calcPaintCost(liters, pricePerLiter) {
-  return liters * pricePerLiter;
+function calcPaintCost(liters, pricePerL) {
+  return liters * pricePerL;
+}
+function round(num) {
+  return isNaN(num) ? 0 : +num.toFixed(2);
 }
 
+// === WALL TAB CALC ===
 document.getElementById('calculateBtn').onclick = () => {
-  // Wall Mode
   let wallArea = 0;
   let ceilingArea = 0;
 
   document.querySelectorAll('.wall-width').forEach((el, i) => {
-    const width = parseFloat(el.value) || 0;
-    const height = parseFloat(document.querySelectorAll('.wall-height')[i].value) || 0;
-    wallArea += width * height;
+    const width = parseFloat(el.value);
+    const height = parseFloat(document.querySelectorAll('.wall-height')[i].value);
+    wallArea += calcArea(width, height);
   });
+
   document.querySelectorAll('.ceiling-length').forEach((el, i) => {
-    const length = parseFloat(el.value) || 0;
-    const width = parseFloat(document.querySelectorAll('.ceiling-width')[i].value) || 0;
-    ceilingArea += length * width;
+    const len = parseFloat(el.value);
+    const wid = parseFloat(document.querySelectorAll('.ceiling-width')[i].value);
+    ceilingArea += calcArea(len, wid);
   });
 
   const doorArea = parseFloat(document.getElementById('doorArea').value) || 0;
   const windowArea = parseFloat(document.getElementById('windowArea').value) || 0;
   wallArea -= (doorArea + windowArea);
 
-  const wallCoverage = parseFloat(document.getElementById('wallCoverage').value) || 12;
+  const wallCov = parseFloat(document.getElementById('wallCoverage').value) || 1;
   const wallCoats = parseInt(document.getElementById('wallCoats').value) || 1;
-  const ceilingCoverage = parseFloat(document.getElementById('ceilingCoverage').value) || 12;
-  const ceilingCoats = parseInt(document.getElementById('ceilingCoats').value) || 1;
-  const jobRate = parseFloat(document.getElementById('jobPrice').value) || 0;
-  const paintRate = parseFloat(document.getElementById('paintPrice').value) || 0;
+  const ceilCov = parseFloat(document.getElementById('ceilingCoverage').value) || 1;
+  const ceilCoats = parseInt(document.getElementById('ceilingCoats').value) || 1;
+  const jobPrice = parseFloat(document.getElementById('jobPrice').value) || 0;
+  const paintPrice = parseFloat(document.getElementById('paintPrice').value) || 0;
 
-  const wallPaint = calcPaint(wallArea, wallCoats, wallCoverage);
-  const ceilingPaint = calcPaint(ceilingArea, ceilingCoats, ceilingCoverage);
+  const wallLiters = calcPaint(wallArea, wallCoats, wallCov);
+  const ceilLiters = calcPaint(ceilingArea, ceilCoats, ceilCov);
+  const wallPaintCost = calcPaintCost(wallLiters, paintPrice);
+  const ceilPaintCost = calcPaintCost(ceilLiters, paintPrice);
+  const wallJob = calcCost(wallArea, jobPrice);
+  const ceilJob = calcCost(ceilingArea, jobPrice);
 
-  const wallJobCost = calcCost(wallArea, jobRate);
-  const ceilingJobCost = calcCost(ceilingArea, jobRate);
-  const wallPaintCost = calcPaintCost(wallPaint, paintRate);
-  const ceilingPaintCost = calcPaintCost(ceilingPaint, paintRate);
-
-  document.getElementById('results').innerHTML = `
-    <p>Total Wall Area: <strong>${wallArea.toFixed(2)} m²</strong></p>
-    <p>Total Ceiling Area: <strong>${ceilingArea.toFixed(2)} m²</strong></p>
-    <p>Wall Paint Needed: <strong>${wallPaint.toFixed(2)} L</strong></p>
-    <p>Ceiling Paint Needed: <strong>${ceilingPaint.toFixed(2)} L</strong></p>
-    <p>Wall Paint Cost: €${wallPaintCost.toFixed(2)}</p>
-    <p>Ceiling Paint Cost: €${ceilingPaintCost.toFixed(2)}</p>
-    <p>Wall Job Cost: €${wallJobCost.toFixed(2)}</p>
-    <p>Ceiling Job Cost: €${ceilingJobCost.toFixed(2)}</p>
-  `;
+  document.getElementById('wallResults').innerHTML = `
+    <p>Wall Area: ${round(wallArea)} m²</p>
+    <p>Paint Needed: ${round(wallLiters)} L</p>
+    <p>Paint Cost: €${round(wallPaintCost)}</p>
+    <p>Job Cost: €${round(wallJob)}</p>`;
+  document.getElementById('ceilingResults').innerHTML = `
+    <p>Ceiling Area: ${round(ceilingArea)} m²</p>
+    <p>Paint Needed: ${round(ceilLiters)} L</p>
+    <p>Paint Cost: €${round(ceilPaintCost)}</p>
+    <p>Job Cost: €${round(ceilJob)}</p>`;
+  document.getElementById('results').classList.remove('hidden');
 };
 
-// Room and Total buttons (use similar pattern — add if needed)
+// === ROOM CALC ===
+document.getElementById('roomCalculateBtn').onclick = () => {
+  const L = parseFloat(document.getElementById('roomLength').value);
+  const W = parseFloat(document.getElementById('roomWidth').value);
+  const H = parseFloat(document.getElementById('roomHeight').value);
+
+  const wallArea = 2 * H * (L + W);
+  const ceilArea = L * W;
+
+  const wallCov = parseFloat(document.getElementById('roomWallCoverage').value);
+  const wallCoats = parseInt(document.getElementById('roomWallCoats').value);
+  const ceilCov = parseFloat(document.getElementById('roomCeilingCoverage').value);
+  const ceilCoats = parseInt(document.getElementById('roomCeilingCoats').value);
+  const jobPrice = parseFloat(document.getElementById('roomJobPrice').value);
+  const paintPrice = parseFloat(document.getElementById('roomPaintPrice').value);
+
+  const wallLiters = calcPaint(wallArea, wallCoats, wallCov);
+  const ceilLiters = calcPaint(ceilArea, ceilCoats, ceilCov);
+
+  const wallPaintCost = calcPaintCost(wallLiters, paintPrice);
+  const ceilPaintCost = calcPaintCost(ceilLiters, paintPrice);
+  const wallJob = calcCost(wallArea, jobPrice);
+  const ceilJob = calcCost(ceilArea, jobPrice);
+
+  document.getElementById('roomWallResults').innerHTML = `
+    <p>Wall Area: ${round(wallArea)} m²</p>
+    <p>Paint Needed: ${round(wallLiters)} L</p>
+    <p>Paint Cost: €${round(wallPaintCost)}</p>
+    <p>Job Cost: €${round(wallJob)}</p>`;
+  document.getElementById('roomCeilingResults').innerHTML = `
+    <p>Ceiling Area: ${round(ceilArea)} m²</p>
+    <p>Paint Needed: ${round(ceilLiters)} L</p>
+    <p>Paint Cost: €${round(ceilPaintCost)}</p>
+    <p>Job Cost: €${round(ceilJob)}</p>`;
+  document.getElementById('roomResults').classList.remove('hidden');
+};
+
+// === TOTAL AREA CALC ===
+document.getElementById('totalCalculateBtn').onclick = () => {
+  const wallArea = parseFloat(document.getElementById('totalWallArea').value);
+  const ceilArea = parseFloat(document.getElementById('totalCeilingArea').value);
+  const wallCov = parseFloat(document.getElementById('totalWallCoverage').value);
+  const wallCoats = parseInt(document.getElementById('totalWallCoats').value);
+  const ceilCov = parseFloat(document.getElementById('totalCeilingCoverage').value);
+  const ceilCoats = parseInt(document.getElementById('totalCeilingCoats').value);
+  const jobPrice = parseFloat(document.getElementById('totalJobPrice').value);
+  const paintPrice = parseFloat(document.getElementById('totalPaintPrice').value);
+
+  const wallLiters = calcPaint(wallArea, wallCoats, wallCov);
+  const ceilLiters = calcPaint(ceilArea, ceilCoats, ceilCov);
+  const wallPaintCost = calcPaintCost(wallLiters, paintPrice);
+  const ceilPaintCost = calcPaintCost(ceilLiters, paintPrice);
+  const wallJob = calcCost(wallArea, jobPrice);
+  const ceilJob = calcCost(ceilArea, jobPrice);
+
+  document.getElementById('totalWallResults').innerHTML = `
+    <p>Wall Area: ${round(wallArea)} m²</p>
+    <p>Paint Needed: ${round(wallLiters)} L</p>
+    <p>Paint Cost: €${round(wallPaintCost)}</p>
+    <p>Job Cost: €${round(wallJob)}</p>`;
+  document.getElementById('totalCeilingResults').innerHTML = `
+    <p>Ceiling Area: ${round(ceilArea)} m²</p>
+    <p>Paint Needed: ${round(ceilLiters)} L</p>
+    <p>Paint Cost: €${round(ceilPaintCost)}</p>
+    <p>Job Cost: €${round(ceilJob)}</p>`;
+  document.getElementById('totalResults').classList.remove('hidden');
+};
+
+// === SAVE / EXPORT / PRINT (ALL TABS) ===
+function saveJSON(fields) {
+  const data = {};
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    data[id] = el ? el.value : null;
+  });
+  const json = JSON.stringify(data, null, 2);
+  const blob = new Blob([json], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "paint_project.json";
+  a.click();
+}
+
+// Assign Save buttons
+document.getElementById('saveBtn').onclick = () => {
+  saveJSON(['wallCoverage','wallCoats','ceilingCoverage','ceilingCoats','jobPrice','paintPrice']);
+};
+document.getElementById('roomSaveBtn').onclick = () => {
+  saveJSON(['roomLength','roomWidth','roomHeight','roomWallCoverage','roomWallCoats','roomCeilingCoverage','roomCeilingCoats','roomJobPrice','roomPaintPrice']);
+};
+document.getElementById('totalSaveBtn').onclick = () => {
+  saveJSON(['totalWallArea','totalCeilingArea','totalWallCoverage','totalWallCoats','totalCeilingCoverage','totalCeilingCoats','totalJobPrice','totalPaintPrice']);
+};
+
+// Export = same as Save for now
+document.getElementById('exportBtn').onclick = () => document.getElementById('saveBtn').click();
+document.getElementById('roomExportBtn').onclick = () => document.getElementById('roomSaveBtn').click();
+document.getElementById('totalExportBtn').onclick = () => document.getElementById('totalSaveBtn').click();
+
+// Print logic
+document.getElementById('printBtn').onclick = () => window.print();
+document.getElementById('roomPrintBtn').onclick = () => window.print();
+document.getElementById('totalPrintBtn').onclick = () => window.print();
 </script>
 </body>
 </html>
