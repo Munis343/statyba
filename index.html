@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Paint Calculator</title>
+  <title>Pro Paint Calculator</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     :root {
@@ -26,17 +26,17 @@
   </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans py-8">
-  <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow space-y-6">
-    <h1 class="text-2xl font-bold text-[var(--primary)] text-center mb-2">Paint Calculator</h1>
+  <div class="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow space-y-6">
+    <h1 class="text-2xl font-bold text-[var(--primary)] text-center mb-4">Pro Paint Calculator</h1>
 
     <!-- Tabs -->
-    <div class="flex justify-center gap-6 border-b">
+    <div class="flex justify-center gap-6 border-b mb-4">
       <button id="tab-wall" class="tab-active pb-2" onclick="setMode('wall')">Wall Dimensions</button>
       <button id="tab-room" class="tab-inactive pb-2" onclick="setMode('room')">Room Dimensions</button>
       <button id="tab-area" class="tab-inactive pb-2" onclick="setMode('area')">Total Area</button>
     </div>
 
-    <!-- Wall Dimensions -->
+    <!-- Wall Mode -->
     <div id="mode-wall" class="space-y-6">
       <!-- Walls -->
       <div>
@@ -52,19 +52,17 @@
         <button onclick="addCeiling()" class="mt-2 bg-gray-200 text-sm px-3 py-1 rounded">Add Ceiling</button>
       </div>
 
-      <!-- Subtractions -->
+      <!-- Subtract -->
       <div>
-        <h2 class="font-semibold mb-2 text-[var(--primary)]">Subtract Doors and Windows (optional):</h2>
+        <h2 class="font-semibold mb-2 text-[var(--primary)]">Subtract Doors and Windows:</h2>
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block mb-1">Doors:</label>
-            <input type="number" id="doorsCount" class="w-full px-2 py-1 rounded" placeholder="3" />
-            <p class="text-xs text-gray-500">(~ 2 sq m each)</p>
+            <label class="block text-sm mb-1">Door Area (m²):</label>
+            <input type="number" id="doorArea" class="w-full px-2 py-1 rounded" />
           </div>
           <div>
-            <label class="block mb-1">Windows:</label>
-            <input type="number" id="windowsCount" class="w-full px-2 py-1 rounded" placeholder="4" />
-            <p class="text-xs text-gray-500">(~ 1.1 sq m each)</p>
+            <label class="block text-sm mb-1">Window Area (m²):</label>
+            <input type="number" id="windowArea" class="w-full px-2 py-1 rounded" />
           </div>
         </div>
       </div>
@@ -72,55 +70,85 @@
 
     <!-- Room Mode -->
     <div id="mode-room" class="space-y-6 hidden">
+      <h2 class="font-semibold mb-2 text-[var(--primary)]">Room Dimensions</h2>
       <div class="grid grid-cols-3 gap-4">
         <div>
-          <label class="block mb-1">Length:</label>
+          <label class="block mb-1">Length (m):</label>
           <input type="number" id="roomLength" class="w-full px-2 py-1 rounded" />
         </div>
         <div>
-          <label class="block mb-1">Width:</label>
+          <label class="block mb-1">Width (m):</label>
           <input type="number" id="roomWidth" class="w-full px-2 py-1 rounded" />
         </div>
         <div>
-          <label class="block mb-1">Height:</label>
+          <label class="block mb-1">Height (m):</label>
           <input type="number" id="roomHeight" class="w-full px-2 py-1 rounded" />
         </div>
       </div>
     </div>
 
-    <!-- Total Area Mode -->
-    <div id="mode-area" class="space-y-4 hidden">
-      <label class="block">Enter Total Area (sq m):</label>
-      <input type="number" id="manualArea" class="w-full px-2 py-1 rounded" />
-    </div>
-
-    <!-- Paint Details -->
-    <div class="space-y-4">
-      <h2 class="font-semibold text-[var(--primary)]">Paint Details</h2>
+    <!-- Area Mode -->
+    <div id="mode-area" class="space-y-6 hidden">
+      <h2 class="font-semibold mb-2 text-[var(--primary)]">Manual Surface Areas</h2>
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block mb-1">Coverage Rate:</label>
-          <input type="number" id="coverageRate" class="w-full px-2 py-1 rounded" placeholder="12" />
-          <p class="text-xs text-gray-500">sq m / liter</p>
+          <label class="block text-sm mb-1">Wall Area (m²):</label>
+          <input type="number" id="manualWall" class="w-full px-2 py-1 rounded" />
         </div>
         <div>
-          <label class="block mb-1">Number of Coats:</label>
-          <input type="number" id="coats" class="w-full px-2 py-1 rounded" placeholder="2" />
+          <label class="block text-sm mb-1">Ceiling Area (m²):</label>
+          <input type="number" id="manualCeiling" class="w-full px-2 py-1 rounded" />
         </div>
       </div>
     </div>
 
-    <!-- Button -->
+    <!-- Paint Details -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Wall Paint -->
+      <div>
+        <h2 class="font-semibold mb-2 text-[var(--primary)]">Wall Paint Details</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm mb-1">Coverage Rate:</label>
+            <input type="number" id="wallCoverage" class="w-full px-2 py-1 rounded" placeholder="12" />
+            <p class="text-xs text-gray-500">sq m / liter</p>
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Coats:</label>
+            <input type="number" id="wallCoats" class="w-full px-2 py-1 rounded" placeholder="2" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Ceiling Paint -->
+      <div>
+        <h2 class="font-semibold mb-2 text-[var(--primary)]">Ceiling Paint Details</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm mb-1">Coverage Rate:</label>
+            <input type="number" id="ceilingCoverage" class="w-full px-2 py-1 rounded" placeholder="12" />
+            <p class="text-xs text-gray-500">sq m / liter</p>
+          </div>
+          <div>
+            <label class="block text-sm mb-1">Coats:</label>
+            <input type="number" id="ceilingCoats" class="w-full px-2 py-1 rounded" placeholder="1" />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculate -->
     <div>
-      <button onclick="calculate()" class="w-full bg-[var(--highlight)] text-white font-semibold py-2 rounded">Calculate</button>
+      <button onclick="calculate()" class="w-full bg-[var(--highlight)] text-white font-semibold py-2 rounded mt-4">Calculate</button>
     </div>
 
     <!-- Results -->
-    <div id="results" class="bg-green-100 border border-green-300 text-green-800 p-4 rounded hidden space-y-1">
-      <p>Total Paintable Area: <span id="areaOutput">0</span> sq m</p>
-      <p>Estimated Paint Needed: <span id="paintOutput">0</span> Liters</p>
+    <div id="results" class="bg-green-100 border border-green-300 text-green-800 p-4 rounded hidden space-y-1 mt-4">
+      <p>Total Wall Area: <span id="wallOutput">0</span> m²</p>
+      <p>Total Ceiling Area: <span id="ceilingOutput">0</span> m²</p>
+      <p>Wall Paint Needed: <span id="wallPaintOutput">0</span> Liters</p>
+      <p>Ceiling Paint Needed: <span id="ceilingPaintOutput">0</span> Liters</p>
     </div>
-  </div>
 <script>
 let mode = 'wall';
 let walls = [];
@@ -137,16 +165,16 @@ function setMode(newMode) {
 function addWall() {
   const i = walls.length + 1;
   const container = document.createElement('div');
-  container.className = 'flex gap-2 items-center';
+  container.className = "flex gap-2 items-center";
   container.innerHTML = `
     <label class="text-sm font-medium w-16">Wall ${i}:</label>
-    <input type="number" class="w-24 px-2 py-1 rounded wall-width" placeholder="Width" />
+    <input type="number" class="w-20 px-2 py-1 rounded wall-width" placeholder="Width" />
     <span>m</span>
-    <input type="number" class="w-24 px-2 py-1 rounded wall-height" placeholder="Height" />
+    <input type="number" class="w-20 px-2 py-1 rounded wall-height" placeholder="Height" />
     <span>m</span>
     <button onclick="this.parentElement.remove(); walls.pop(); renumberWalls()" class="text-red-600 text-lg">×</button>
   `;
-  document.getElementById('wallFields').appendChild(container);
+  document.getElementById("wallFields").appendChild(container);
   walls.push(container);
 }
 
@@ -158,16 +186,16 @@ function renumberWalls() {
 function addCeiling() {
   const i = ceilings.length + 1;
   const container = document.createElement('div');
-  container.className = 'flex gap-2 items-center';
+  container.className = "flex gap-2 items-center";
   container.innerHTML = `
-    <label class="text-sm font-medium w-20">Ceiling ${i}:</label>
-    <input type="number" class="w-24 px-2 py-1 rounded ceiling-length" placeholder="Length" />
+    <label class="text-sm font-medium w-24">Ceiling ${i}:</label>
+    <input type="number" class="w-20 px-2 py-1 rounded ceiling-length" placeholder="Length" />
     <span>m</span>
-    <input type="number" class="w-24 px-2 py-1 rounded ceiling-width" placeholder="Width" />
+    <input type="number" class="w-20 px-2 py-1 rounded ceiling-width" placeholder="Width" />
     <span>m</span>
     <button onclick="this.parentElement.remove(); ceilings.pop(); renumberCeilings()" class="text-red-600 text-lg">×</button>
   `;
-  document.getElementById('ceilingFields').appendChild(container);
+  document.getElementById("ceilingFields").appendChild(container);
   ceilings.push(container);
 }
 
@@ -177,50 +205,62 @@ function renumberCeilings() {
 }
 
 function calculate() {
-  let totalArea = 0;
+  let wallArea = 0;
+  let ceilingArea = 0;
 
   if (mode === 'wall') {
+    // Walls
     walls.forEach(wall => {
       const width = parseFloat(wall.querySelector('.wall-width').value) || 0;
       const height = parseFloat(wall.querySelector('.wall-height').value) || 0;
-      totalArea += width * height;
+      wallArea += width * height;
     });
 
-    ceilings.forEach(ceiling => {
-      const length = parseFloat(ceiling.querySelector('.ceiling-length').value) || 0;
-      const width = parseFloat(ceiling.querySelector('.ceiling-width').value) || 0;
-      totalArea += length * width;
+    // Ceilings
+    ceilings.forEach(c => {
+      const L = parseFloat(c.querySelector('.ceiling-length').value) || 0;
+      const W = parseFloat(c.querySelector('.ceiling-width').value) || 0;
+      ceilingArea += L * W;
     });
 
-    const doors = parseInt(document.getElementById('doorsCount').value) || 0;
-    const windows = parseInt(document.getElementById('windowsCount').value) || 0;
-
-    totalArea -= (doors * 2);     // 2 sqm per door
-    totalArea -= (windows * 1.1); // 1.1 sqm per window
+    // Subtract doors/windows
+    const doorArea = parseFloat(document.getElementById('doorArea').value) || 0;
+    const windowArea = parseFloat(document.getElementById('windowArea').value) || 0;
+    wallArea -= (doorArea + windowArea);
   }
 
-  if (mode === 'room') {
+  else if (mode === 'room') {
     const L = parseFloat(document.getElementById('roomLength').value) || 0;
     const W = parseFloat(document.getElementById('roomWidth').value) || 0;
     const H = parseFloat(document.getElementById('roomHeight').value) || 0;
-    totalArea = 2 * H * (L + W) + (L * W); // walls + ceiling
+    wallArea = 2 * H * (L + W);
+    ceilingArea = L * W;
   }
 
-  if (mode === 'area') {
-    totalArea = parseFloat(document.getElementById('manualArea').value) || 0;
+  else if (mode === 'area') {
+    wallArea = parseFloat(document.getElementById('manualWall').value) || 0;
+    ceilingArea = parseFloat(document.getElementById('manualCeiling').value) || 0;
   }
 
-  const coverage = parseFloat(document.getElementById('coverageRate').value) || 12;
-  const coats = parseInt(document.getElementById('coats').value) || 1;
+  // Wall paint
+  const wallCoverage = parseFloat(document.getElementById('wallCoverage').value) || 12;
+  const wallCoats = parseInt(document.getElementById('wallCoats').value) || 1;
+  const wallPaint = (wallArea * wallCoats) / wallCoverage;
 
-  const paintNeeded = (totalArea * coats) / coverage;
+  // Ceiling paint
+  const ceilingCoverage = parseFloat(document.getElementById('ceilingCoverage').value) || 12;
+  const ceilingCoats = parseInt(document.getElementById('ceilingCoats').value) || 1;
+  const ceilingPaint = (ceilingArea * ceilingCoats) / ceilingCoverage;
 
-  document.getElementById('areaOutput').textContent = totalArea.toFixed(2);
-  document.getElementById('paintOutput').textContent = paintNeeded.toFixed(2);
+  // Results
+  document.getElementById('wallOutput').textContent = wallArea.toFixed(2);
+  document.getElementById('ceilingOutput').textContent = ceilingArea.toFixed(2);
+  document.getElementById('wallPaintOutput').textContent = wallPaint.toFixed(2);
+  document.getElementById('ceilingPaintOutput').textContent = ceilingPaint.toFixed(2);
   document.getElementById('results').classList.remove('hidden');
 }
 
-setMode('wall'); // set default mode
+setMode('wall'); // Default tab
 </script>
 </body>
 </html>
