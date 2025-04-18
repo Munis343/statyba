@@ -1,136 +1,212 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Drywall Calculator Test</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pro Paint Calculator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F5F7FA;
+      color: #263238;
+    }
+    .tab-active {
+      background-color: #3D5AFE;
+      color: white;
+    }
+    .tab-inactive {
+      background-color: #E0E7FF;
+      color: #3D5AFE;
+    }
+    .card {
+      background-color: white;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+  </style>
 </head>
-<body>
-    <h1>Check the Console for Results</h1>
-    <p>Open your browser's developer console (F12 or right-click -> Inspect -> Console) to see the output of the example calculations.</p>
+<body class="min-h-screen flex items-center justify-center px-4 py-10">
+  <div class="max-w-3xl w-full space-y-8">
+    <h1 class="text-2xl font-bold text-center text-[#3D5AFE]">🎨 Pro Paint Calculator</h1>
 
-    <script>
-        // --- Paste the ENTIRE JavaScript code you received here ---
+    <div class="flex justify-center gap-2">
+      <button id="wallTab" class="tab-active px-4 py-2 rounded" onclick="setMode('wall')">Wall Dimensions</button>
+      <button id="roomTab" class="tab-inactive px-4 py-2 rounded" onclick="setMode('room')">Room Dimensions</button>
+      <button id="areaTab" class="tab-inactive px-4 py-2 rounded" onclick="setMode('area')">Total Area</button>
+    </div>
 
-        /**
-         * Calculates the estimated number of standard drywall sheets needed for a room.
-         * Uses metric units (meters, square meters).
-         *
-         * @param {number} roomLengthMeters - The length of the room in meters.
-         * @param {number} roomWidthMeters - The width of the room in meters.
-         * @param {number} wallHeightMeters - The height of the walls in meters.
-         * @param {number} sheetWidthMeters - The width of a single drywall sheet in meters.
-         * @param {number} sheetLengthMeters - The length of a single drywall sheet in meters.
-         * @param {number} wastePercentage - The estimated waste as a percentage (e.g., 10 for 10%).
-         * @returns {number} The estimated total number of drywall sheets needed, rounded up to the nearest whole number.
-         */
-        function calculateDrywallSheetsMetric(
-            roomLengthMeters,
-            roomWidthMeters,
-            wallHeightMeters,
-            sheetWidthMeters,
-            sheetLengthMeters,
-            wastePercentage
-        ) {
-            // --- Input Validation (Basic) ---
-            if (
-                roomLengthMeters <= 0 ||
-                roomWidthMeters <= 0 ||
-                wallHeightMeters <= 0 ||
-                sheetWidthMeters <= 0 ||
-                sheetLengthMeters <= 0 ||
-                wastePercentage < 0
-            ) {
-                console.error("All dimensions and waste percentage must be positive numbers (waste can be zero).");
-                return NaN; // Return Not-a-Number for invalid input
-            }
+    <!-- Unit & Coverage Settings -->
+    <div class="card space-y-4">
+      <div class="flex gap-4 items-center">
+        <label class="font-medium">Units:</label>
+        <select id="unitSelect" class="border rounded px-2 py-1" onchange="updateUnitLabels()">
+          <option value="feet">Feet</option>
+          <option value="meters">Meters</option>
+        </select>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block font-medium">Coats</label>
+          <input type="number" id="coats" min="1" max="3" value="2" class="border rounded px-3 py-1 w-full"/>
+        </div>
+        <div>
+          <label class="block font-medium">Coverage per Gallon/Liter</label>
+          <input type="number" id="coverage" value="350" class="border rounded px-3 py-1 w-full"/>
+        </div>
+      </div>
+    </div>
 
-            // --- Calculations ---
+    <!-- Wall Mode -->
+    <div id="wallMode" class="card space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <input type="number" id="wallWidth" placeholder="Wall Width" class="border rounded px-3 py-1 w-full"/>
+        <input type="number" id="wallHeight" placeholder="Wall Height" class="border rounded px-3 py-1 w-full"/>
+      </div>
+      <button onclick="addWall()" class="bg-[#3D5AFE] text-white px-4 py-2 rounded hover:bg-[#2C4CFA]">➕ Add Wall</button>
+      <ul id="wallsList" class="list-disc pl-5 text-sm text-gray-600"></ul>
+    </div>
 
-            // 1. Calculate Wall Area
-            const roomPerimeterMeters = 2 * (roomLengthMeters + roomWidthMeters);
-            const totalWallAreaSqMeters = roomPerimeterMeters * wallHeightMeters;
+    <!-- Room Mode -->
+    <div id="roomMode" class="card space-y-4 hidden">
+      <div class="grid grid-cols-2 gap-4">
+        <input type="number" id="roomLength" placeholder="Room Length" class="border rounded px-3 py-1 w-full"/>
+        <input type="number" id="roomWidth" placeholder="Room Width" class="border rounded px-3 py-1 w-full"/>
+        <input type="number" id="roomHeight" placeholder="Room Height" class="border rounded px-3 py-1 w-full"/>
+      </div>
+    </div>
 
-            // 2. Calculate Ceiling Area
-            const totalCeilingAreaSqMeters = roomLengthMeters * roomWidthMeters;
+    <!-- Area Mode -->
+    <div id="areaMode" class="card space-y-4 hidden">
+      <input type="number" id="manualArea" placeholder="Enter total area" class="border rounded px-3 py-1 w-full"/>
+    </div>
 
-            // 3. Calculate Total Area to Cover
-            const totalAreaToCoverSqMeters = totalWallAreaSqMeters + totalCeilingAreaSqMeters;
+    <!-- Subtractions & Extras -->
+    <div class="card space-y-4">
+      <div class="grid grid-cols-2 gap-4">
+        <input type="number" id="windowsArea" placeholder="Windows Area to Subtract" class="border rounded px-3 py-1 w-full"/>
+        <input type="number" id="doorsArea" placeholder="Doors Area to Subtract" class="border rounded px-3 py-1 w-full"/>
+      </div>
+      <div class="flex gap-4 items-center">
+        <input type="checkbox" id="includeCeiling" class="mr-2"/>
+        <label for="includeCeiling">Include Ceiling</label>
+      </div>
+      <div>
+        <label class="block font-medium">Trim (linear <span id="unitLabel">ft</span>)</label>
+        <input type="number" id="trimLength" placeholder="Trim Length" class="border rounded px-3 py-1 w-full"/>
+      </div>
+    </div>
 
-            // 4. Calculate Area of One Drywall Sheet
-            const singleSheetAreaSqMeters = sheetWidthMeters * sheetLengthMeters;
+    <!-- Results Section -->
+    <div class="card">
+      <h2 class="text-lg font-semibold text-[#3D5AFE] mb-2">Results</h2>
+      <div id="resultArea" class="text-sm text-gray-700 space-y-1">
+        <div>Total Paintable Area: <span id="areaOut">0</span> <span id="unitSq">sq ft</span></div>
+        <div>Paint Needed: <strong><span id="paintOut">0</span></strong> <span id="unitGal">gallons</span></div>
+      </div>
+    </div>
+  </div>
+<script>
+let mode = 'wall';
+let unit = 'feet';
+let walls = [];
 
-             // Avoid division by zero if sheet size is invalid
-            if (singleSheetAreaSqMeters <= 0) {
-                 console.error("Drywall sheet dimensions result in zero or negative area.");
-                 return NaN;
-            }
+function setMode(newMode) {
+  mode = newMode;
+  document.getElementById('wallMode').classList.add('hidden');
+  document.getElementById('roomMode').classList.add('hidden');
+  document.getElementById('areaMode').classList.add('hidden');
+  document.getElementById(newMode + 'Mode').classList.remove('hidden');
 
+  // Tab style
+  document.getElementById('wallTab').className = newMode === 'wall' ? 'tab-active px-4 py-2 rounded' : 'tab-inactive px-4 py-2 rounded';
+  document.getElementById('roomTab').className = newMode === 'room' ? 'tab-active px-4 py-2 rounded' : 'tab-inactive px-4 py-2 rounded';
+  document.getElementById('areaTab').className = newMode === 'area' ? 'tab-active px-4 py-2 rounded' : 'tab-inactive px-4 py-2 rounded';
 
-            // 5. Calculate Raw Number of Sheets Needed (without waste)
-            const rawSheetsNeeded = totalAreaToCoverSqMeters / singleSheetAreaSqMeters;
+  calculate();
+}
 
-            // 6. Account for Waste
-            const wasteFactor = 1 + (wastePercentage / 100);
-            const sheetsWithWaste = rawSheetsNeeded * wasteFactor;
+function updateUnitLabels() {
+  unit = document.getElementById('unitSelect').value;
+  document.getElementById('unitLabel').textContent = unit === 'feet' ? 'ft' : 'm';
+  document.getElementById('unitSq').textContent = unit === 'feet' ? 'sq ft' : 'm²';
+  document.getElementById('unitGal').textContent = unit === 'feet' ? 'gallons' : 'liters';
+  calculate();
+}
 
-            // 7. Round Up to the Nearest Whole Sheet
-            const finalSheetsNeeded = Math.ceil(sheetsWithWaste);
+function addWall() {
+  const width = parseFloat(document.getElementById('wallWidth').value);
+  const height = parseFloat(document.getElementById('wallHeight').value);
+  if (!width || !height) return alert('Enter valid wall dimensions.');
+  walls.push({ width, height });
+  document.getElementById('wallWidth').value = '';
+  document.getElementById('wallHeight').value = '';
+  renderWalls();
+  calculate();
+}
 
-            return finalSheetsNeeded;
-        }
+function renderWalls() {
+  const list = document.getElementById('wallsList');
+  list.innerHTML = '';
+  walls.forEach((w, i) => {
+    const li = document.createElement('li');
+    li.textContent = `Wall ${i + 1}: ${w.width} × ${w.height} = ${(w.width * w.height).toFixed(2)} ${unit === 'feet' ? 'sq ft' : 'm²'}`;
+    list.appendChild(li);
+  });
+}
 
-        // --- Example Usage (Metric) ---
+function calculate() {
+  const coats = parseInt(document.getElementById('coats').value) || 1;
+  const coverage = parseFloat(document.getElementById('coverage').value) || 350;
+  let area = 0;
 
-        // Example: A room 5 meters long, 4 meters wide, with walls 2.5 meters high.
-        // Using standard metric drywall sheets: 1.2 meters wide x 2.4 meters long.
-        // Assume 10% waste.
-        const exampleRoomLength = 5;      // meters
-        const exampleRoomWidth = 4;       // meters
-        const exampleWallHeight = 2.5;    // meters
-        const exampleSheetWidth = 1.2;    // meters (common metric size)
-        const exampleSheetLength = 2.4;   // meters (common metric size)
-        const exampleWastePercent = 10;   // percentage
+  if (mode === 'wall') {
+    area = walls.reduce((sum, w) => sum + (w.width * w.height), 0);
+  }
 
-        const estimatedDrywallSheets = calculateDrywallSheetsMetric(
-            exampleRoomLength,
-            exampleRoomWidth,
-            exampleWallHeight,
-            exampleSheetWidth,
-            exampleSheetLength,
-            exampleWastePercent
-        );
+  if (mode === 'room') {
+    const L = parseFloat(document.getElementById('roomLength').value) || 0;
+    const W = parseFloat(document.getElementById('roomWidth').value) || 0;
+    const H = parseFloat(document.getElementById('roomHeight').value) || 0;
+    area = 2 * H * (L + W); // perimeter * height
+  }
 
-        if (!isNaN(estimatedDrywallSheets)) {
-            console.log(`For a room ${exampleRoomLength}m x ${exampleRoomWidth}m x ${exampleWallHeight}m`);
-            console.log(`Using ${exampleSheetWidth}m x ${exampleSheetLength}m sheets with ${exampleWastePercent}% waste:`);
-            console.log(`Estimated number of drywall sheets needed: ${estimatedDrywallSheets}`);
-        }
+  if (mode === 'area') {
+    area = parseFloat(document.getElementById('manualArea').value) || 0;
+  }
 
-        // --- Another Example with different sheet size ---
-        const exampleRoomLength2 = 6;
-        const exampleRoomWidth2 = 5;
-        const exampleWallHeight2 = 2.8;
-        const exampleSheetWidth2 = 1.2;
-        const exampleSheetLength2 = 3.0; // Longer sheet size
-        const exampleWastePercent2 = 12;
+  // Subtractions
+  const subtractWindows = parseFloat(document.getElementById('windowsArea').value) || 0;
+  const subtractDoors = parseFloat(document.getElementById('doorsArea').value) || 0;
+  area -= (subtractWindows + subtractDoors);
 
-        const estimatedDrywallSheets2 = calculateDrywallSheetsMetric(
-            exampleRoomLength2,
-            exampleRoomWidth2,
-            exampleWallHeight2,
-            exampleSheetWidth2,
-            exampleSheetLength2,
-            exampleWastePercent2
-        );
+  // Add ceiling if checked
+  if (document.getElementById('includeCeiling').checked) {
+    const L = parseFloat(document.getElementById('roomLength').value) || 0;
+    const W = parseFloat(document.getElementById('roomWidth').value) || 0;
+    area += (L * W);
+  }
 
-        if (!isNaN(estimatedDrywallSheets2)) {
-            console.log(`\nFor a room ${exampleRoomLength2}m x ${exampleRoomWidth2}m x ${exampleWallHeight2}m`);
-            console.log(`Using ${exampleSheetWidth2}m x ${exampleSheetLength2}m sheets with ${exampleWastePercent2}% waste:`);
-            console.log(`Estimated number of drywall sheets needed: ${estimatedDrywallSheets2}`);
-        }
+  // Add trim (estimate: 4 inch height × trim length)
+  const trimLength = parseFloat(document.getElementById('trimLength').value) || 0;
+  const trimHeight = unit === 'feet' ? (4 / 12) : 0.1; // 4 inches or 10 cm
+  area += (trimLength * trimHeight);
 
+  area = Math.max(0, area);
+  const totalPaint = (area * coats) / coverage;
 
-        // --- End of Pasted JavaScript Code ---
-    </script>
+  document.getElementById('areaOut').textContent = area.toFixed(2);
+  document.getElementById('paintOut').textContent = totalPaint.toFixed(2);
+}
 
+// Recalculate on change
+document.querySelectorAll('input, select').forEach(el => {
+  el.addEventListener('input', calculate);
+});
+
+updateUnitLabels();
+setMode('wall');
+</script>
 </body>
 </html>
